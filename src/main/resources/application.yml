@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据库的url、登录名、密码和数据库名
+    url: jdbc:mysql://175.24.147.229:3306/detection?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: yu1119..
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+  data:
+    mongodb:
+      host: 175.24.147.229
+      port: 27017
+      database: springboot
+      username: root
+      password: yu1119..
+
+
+logging:
+  file:
+    path: "./logs/"

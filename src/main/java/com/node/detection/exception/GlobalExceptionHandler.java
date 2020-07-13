@@ -1,0 +1,30 @@
+package com.node.detection.exception;
+
+import com.node.detection.util.HttpResult;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+
+@Slf4j
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    /**
+     * 统一异常处理，两个注解： @ControllerAdvice、@ExceptionHandler
+     * Spring 会自动调用该方法，不用我们后续做处理
+     * 当系统抛出异常时，返回自定义 JSON 数据，而不返回系统自带的数据
+     * @param req 请求
+     * @param e 异常信息
+     * @return 自定义返回的 JSON 数据
+     */
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
+    public HttpResult defaultErrorHandler(HttpServletRequest req, Throwable e) {
+        String message = e.getMessage();
+        log.error("[" + req.getRequestURI() + "]：" + message); // [请求的URL] + 消息
+        return HttpResult.error(message);
+    }
+}
