@@ -23,8 +23,6 @@ public class NodeController {
     @ApiOperationSupport(author = "xinyu_gao")
     @PostMapping("/find")
     public HttpResult findNode(@RequestBody Node node){
-        log.info(node.getType());
-        PageResult result = nodeService.findByType(node.getType(),0,2);
-        return HttpResult.ok(result);
+        return HttpResult.ok(nodeService.findByType(node.getType(),0,2));
     }
 }

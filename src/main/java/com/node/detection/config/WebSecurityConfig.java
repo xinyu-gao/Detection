@@ -64,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/ws", "/", "/user/login_page", "/swagger-ui.html", "/mongodb",
                         "/kaptcha", "/hello", "/login", "/login?error", "/user/save",
-                        "/node/find", "/user/find_role"
+                        "/node/find", "/user/find_role", "/checkVerifyCode"
                 )
                 .permitAll()
                 .anyRequest().authenticated()  // 其他请求,登录后可以访问
