@@ -7,6 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+/**
+ * @author xinyu
+ */
 @Data
 @Entity
 @Table(name = "node")

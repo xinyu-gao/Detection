@@ -6,8 +6,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author chengzi
+ */
 @Repository
 public interface NodeRepository extends JpaRepository<Node, Long> {
+    /**
+     * select * from node where name = ?
+     * @param name 节点名
+     * @return 节点信息
+     */
     Node findByName(String name);
+
+    /**
+     * select * from node where type = ? limit
+     * @param type 节点类型
+     * @param pageable 分页
+     * @return 节点信息分页结果
+     */
     Page<Node> findByType(String type, Pageable pageable);
 }

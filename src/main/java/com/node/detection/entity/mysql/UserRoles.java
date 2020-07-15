@@ -6,12 +6,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author xinyu
+ */
 @Entity
 @Table(name = "user_roles")
 @Data
-public class UserRoles {
+public class UserRoles implements Serializable {
     @Id
     private Long id;
     /**

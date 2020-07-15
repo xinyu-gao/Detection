@@ -5,6 +5,9 @@ import com.node.detection.entity.mysql.SysUser;
 
 import java.util.List;
 
+/**
+ * @author xinyu
+ */
 public interface UserService {
     /**
      * 通过用户名查询该用户的相关信息

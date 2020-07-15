@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Properties;
 
+/**
+ * @author chengzi
+ */
 @Configuration
 @EnableConfigurationProperties(KaptchaProperties.class)
 public class KaptchaAutoConfiguration {
@@ -46,8 +49,8 @@ public class KaptchaAutoConfiguration {
         properties.setProperty(Constants.KAPTCHA_BACKGROUND_CLR_TO, kaptchaProperties.getBackground().getClear().getTo());
 
         properties.setProperty(Constants.KAPTCHA_NOISE_COLOR, kaptchaProperties.getNoise().getColor());
-        properties.setProperty(Constants.KAPTCHA_NOISE_IMPL, kaptchaProperties.getNoise().getImpl());//去掉干扰线
-        properties.setProperty(Constants.KAPTCHA_OBSCURIFICATOR_IMPL, kaptchaProperties.getObscurificator().getImpl());//阴影渲染效果
+        properties.setProperty(Constants.KAPTCHA_NOISE_IMPL, kaptchaProperties.getNoise().getImpl());
+        properties.setProperty(Constants.KAPTCHA_OBSCURIFICATOR_IMPL, kaptchaProperties.getObscurificator().getImpl());
         properties.setProperty(Constants.KAPTCHA_SESSION_KEY, kaptchaProperties.getSession().getKey());
         properties.setProperty(Constants.KAPTCHA_SESSION_DATE, kaptchaProperties.getSession().getDate());
         Config config = new Config(properties);

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 
 
 @Controller
@@ -23,7 +24,8 @@ public class KaptchaController {
     @ApiOperation(value = "请求验证码", notes = "资源路径请求")
     @GetMapping("/kaptcha")
     public void getKaptchaImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        commonService.createAndPrintKaptcha(request, response);
+        BufferedImage bufferedImage = commonService.createKaptchaAndSaveToSession(request, response);
+        KaptchaUtil.writeImageToClient(response, bufferedImage);
     }
 
     @GetMapping("/checkVerifyCode")

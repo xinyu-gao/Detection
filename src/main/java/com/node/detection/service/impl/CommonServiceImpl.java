@@ -1,4 +1,4 @@
-package com.node.detection.service.Impl;
+package com.node.detection.service.impl;
 
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
@@ -17,12 +17,16 @@ public class CommonServiceImpl implements CommonService {
     @Autowired
     private Producer kaptchaProducer;
     @Override
-    public void createAndPrintKaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String kaptchaProducerText = kaptchaProducer.createText(); //验证码字符
-        BufferedImage bufferedImage = kaptchaProducer.createImage(kaptchaProducerText); //验证码图片
+    public BufferedImage createKaptchaAndSaveToSession(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //验证码字符
+        String kaptchaProducerText = kaptchaProducer.createText();
+        //验证码图片
+        BufferedImage bufferedImage = kaptchaProducer.createImage(kaptchaProducerText);
+
         HttpSession session = request.getSession();
-        session.setAttribute(Constants.KAPTCHA_SESSION_KEY, kaptchaProducerText); // 保存在 session 中
+        // 保存在 session 中
         KaptchaUtil.setOptions(response);
-        KaptchaUtil.writeImageToClient(response, bufferedImage);
+        session.setAttribute(Constants.KAPTCHA_SESSION_KEY, kaptchaProducerText);
+        return bufferedImage;
     }
 }

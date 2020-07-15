@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author xinyu
+ */
 @Slf4j
 @RestController
 @RequestMapping("/node")
@@ -20,7 +23,7 @@ public class NodeController {
     @Autowired
     private NodeService nodeService;
 
-    @ApiOperationSupport(author = "xinyu_gao")
+    @ApiOperationSupport(author = "xinyu")
     @PostMapping("/find")
     public HttpResult findNode(@RequestBody Node node){
         return HttpResult.ok(nodeService.findByType(node.getType(),0,2));

@@ -1,4 +1,4 @@
-package com.node.detection.service.Impl;
+package com.node.detection.service.impl;
 
 import com.node.detection.dao.NodeRepository;
 import com.node.detection.entity.mysql.Node;
@@ -9,6 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author xinyu
+ */
 @Service
 public class NodeServiceImpl implements NodeService {
 

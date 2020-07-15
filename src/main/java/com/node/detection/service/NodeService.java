@@ -3,6 +3,9 @@ package com.node.detection.service;
 import com.node.detection.entity.mysql.Node;
 import com.node.detection.util.PageResult;
 
+/**
+ * @author xinyu
+ */
 public interface NodeService {
     /**
      * 通过节点名字查询节点信息

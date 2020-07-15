@@ -6,8 +6,7 @@ import com.node.detection.config.handler.MyAuthentiationSuccessHandler;
 import com.node.detection.config.handler.MyAuthenticationEntryPoint;
 import com.node.detection.config.handler.MyLogoutSuccessHandler;
 import com.node.detection.filter.CustomAuthenticationFilter;
-import com.node.detection.service.Impl.UserDetailsServiceImpl;
-import com.node.detection.util.Encoder;
+import com.node.detection.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,12 +25,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * WebSecurityConfigurerAdapter 提供了一种便利的方式去创建 WebSecurityConfigurer 的实例，
  * 只需要重写 WebSecurityConfigurerAdapter 的方法，
  * 即可配置拦截 URL、设置权限等安全控制。
+ * @EnableWebSecurity 启用 Spring Security 的 Web 安全支持，并提供 Spring MVC 集成
+ * @EnableGlobalMethodSecurity(prePostEnabled = true)// 实现方法级别的权限控制
+ * 在控制器上加 '@PreAuthorize("hasRole('ADMIN')")'， 只有拥有此角色的用户才能调用此接口
+ * @author xinyu
  */
 
 @Configuration
-@EnableWebSecurity // 启用 Spring Security 的 Web 安全支持，并提供 Spring MVC 集成
-@EnableGlobalMethodSecurity(prePostEnabled = true)// 实现方法级别的权限控制
-// @PreAuthorize("hasRole('ADMIN')") //只有拥有此角色的用户才能调用此接口
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyAuthentiationFailureHandler myAuthentiationFailureHandler;
@@ -74,15 +76,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")
                 .permitAll()
                 .and().logout() // 配置登出账号
-                .logoutUrl("/logout") // 登出请求路径
-                .logoutSuccessHandler(myLogoutSuccessHandler) //成功处理器，返回 JSON
+                // 登出请求路径
+                .logoutUrl("/logout")
+                //成功处理器，返回 JSON
+                .logoutSuccessHandler(myLogoutSuccessHandler)
                 .permitAll() // 登出
-                .and().rememberMe()// remember me功能
-                .tokenValiditySeconds(86400 * 7)//有效时间
-                .key("remember-me-key")//保存的cookie键名
+                // remember me功能
+                .and().rememberMe()
+                //有效时间
+                .tokenValiditySeconds(86400 * 7)
+                //保存的cookie键名
+                .key("remember-me-key")
 
                 .and()
-                // 关闭 crsf 防御机制
+                // 关闭 csrf 防御机制
                 .csrf().disable()
                 // 定制我们自己的 session 策略：调整为让 Spring Security 不创建和使用 session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -96,6 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterAt(customAuthenticationFilter(), CustomAuthenticationFilter.class);
     }
 
+    @Override
     public void configure(WebSecurity web){
         // 忽略URL
         web.ignoring()
@@ -125,7 +133,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * 还可以赋予用户具体权限控制
      *
      * @param auth 签名管理器构造器，用于构建用户具体权限控制
-     * @throws Exception
+     * @throws Exception 验证出错
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -134,7 +142,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoderBean());
     }
 
-    //注册自定义的UsernamePasswordAuthenticationFilter
+    /**
+     * 注册自定义的 UsernamePasswordAuthenticationFilter
+     */
     @Bean
     CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
         CustomAuthenticationFilter filter = new CustomAuthenticationFilter();

@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author xinyu
+ */
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -24,7 +27,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public HttpResult defaultErrorHandler(HttpServletRequest req, Throwable e) {
         String message = e.getMessage();
-        log.error("[" + req.getRequestURI() + "]：" + message); // [请求的URL] + 消息
+        // [请求的URL] + 消息
+        log.error("[" + req.getRequestURI() + "]：" + message);
         return HttpResult.error(message);
     }
 }

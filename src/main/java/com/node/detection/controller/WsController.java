@@ -1,14 +1,18 @@
 package com.node.detection.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
+ * @author xinyu
  * @ServerEndpoint 这个注解用于标识作用在类上
  * 它的主要功能是把当前类标识成一个 WebSocket 的服务端
  * 注解的值用户客户端连接访问的 URL 地址
@@ -16,9 +20,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Slf4j
 @Component
 @ServerEndpoint("/ws")
-public abstract class WsController {
+public class WsController {
 
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     /**
      * concurrent 包的线程安全 Set，用来存放每个客户端对应的 WebSocket 对象。
@@ -37,7 +41,7 @@ public abstract class WsController {
     public void onOpen(Session session) throws IOException, EncodeException {
         this.session = session;
         webSocketSet.add(this);
-//        log.info("session"+session+";   author:"+authentication+" websocket连接");
+        log.info("session"+session+";   author:"+authentication+" websocket连接");
         sendMessage("连接成功");
     }
 
@@ -47,7 +51,7 @@ public abstract class WsController {
     @OnClose
     public void onClose() {
         webSocketSet.remove(this);
-//        log.info("session"+session+";   author:"+authentication+" websocket连接关闭");
+        log.info("session"+session+";   author:"+authentication+" websocket连接关闭");
     }
 
     /**
@@ -94,5 +98,23 @@ public abstract class WsController {
         for (WsController item : webSocketSet) {
             item.sendMessage(message);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        WsController that = (WsController) o;
+        return Objects.equals(webSocketSet, that.webSocketSet) &&
+                Objects.equals(session, that.session);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(webSocketSet, session);
     }
 }

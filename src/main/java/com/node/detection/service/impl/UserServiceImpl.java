@@ -1,4 +1,4 @@
-package com.node.detection.service.Impl;
+package com.node.detection.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.node.detection.dao.RoleRepository;
@@ -8,14 +8,16 @@ import com.node.detection.entity.mysql.Role;
 import com.node.detection.entity.mysql.SysUser;
 import com.node.detection.entity.mysql.UserRoles;
 import com.node.detection.service.UserService;
-import com.node.detection.util.Encoder;
+import com.node.detection.util.EncoderUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * @author xinyu
+ */
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
@@ -27,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+
+    @Override
     public SysUser findByUsername(String username) {
         log.info(JSON.toJSONString(userRepository.findByUsername(username)));
         return userRepository.findByUsername(username);
@@ -36,9 +41,10 @@ public class UserServiceImpl implements UserService {
     public void saveUser(SysUser sysUser) throws Exception {
         SysUser user = findByUsername(sysUser.getUsername());
         if(user == null){
-            String passwordAfterEncode = Encoder.passwordEncoder().encode(sysUser.getPassword()); //加密密码
+            //加密密码
+            String passwordAfterEncode = EncoderUtil.passwordEncoder().encode(sysUser.getPassword());
             sysUser.setPassword(passwordAfterEncode);
-            userRepository.saveAndFlush(sysUser); // 存储数据
+            userRepository.saveAndFlush(sysUser);
         }else {
             throw new Exception("username is already exist");
         }
@@ -52,7 +58,8 @@ public class UserServiceImpl implements UserService {
         List<String> roles = new ArrayList<>();
         for(UserRoles userRole : userRoles){
             Optional<Role> role = roleRepository.findById(userRole.getRoleId());
-            roles.add(role.map(Role::getName).orElse(null)); // 查询到了角色名后添加到数组中
+            // 查询到了角色名后添加到数组中
+            roles.add(role.map(Role::getName).orElse(null));
         }
         log.info("roles:" + roles);
         return roles;

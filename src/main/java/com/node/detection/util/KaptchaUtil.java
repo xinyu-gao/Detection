@@ -15,11 +15,11 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * @author xinyu
+ */
 @Slf4j
 public class KaptchaUtil {
-
-    @Autowired
-    private static Producer kaptchaProducer;
 
     /**
      * 将获取到的前端参数转为 string 类型

@@ -1,24 +1,20 @@
 package com.node.detection.entity.mysql;
 
 
-import com.node.detection.service.Impl.UserServiceImpl;
-import com.node.detection.service.UserService;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
+/**
+ * @author xinyu
+ */
 @Entity
 @Table(name = "sys_user")
 @Data
@@ -76,24 +72,9 @@ public class SysUser implements Serializable, UserDetails {
      */
     private boolean enabled;
 
-//    @Autowired
-//    @Transient
-//    private UserService userService;
-//    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
-//    private List<Role> roles;
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//
-//
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//        List<String> roles = userService.findRolesByUserId(this.getId());
-//        for (String role : roles) {
-//            authorities.add(new SimpleGrantedAuthority(role));
-//        }
         return null;
     }
 

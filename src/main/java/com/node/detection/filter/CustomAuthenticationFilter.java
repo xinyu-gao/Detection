@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * AuthenticationFilter that supports rest login(json login) and form login.
- * @author chenhuanming
+ * @author xinyu
  */
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {

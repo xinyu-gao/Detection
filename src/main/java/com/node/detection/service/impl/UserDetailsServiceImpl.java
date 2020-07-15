@@ -1,10 +1,9 @@
-package com.node.detection.service.Impl;
+package com.node.detection.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.node.detection.entity.mysql.SysUser;
 import com.node.detection.exception.ServiceException;
 import com.node.detection.service.UserService;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +16,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author xinyu
+ */
 @Slf4j
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

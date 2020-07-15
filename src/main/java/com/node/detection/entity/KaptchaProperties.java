@@ -3,6 +3,9 @@ package com.node.detection.entity;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * @author xinyu
+ */
 @Data
 @ConfigurationProperties(prefix = "kaptcha")
 public class KaptchaProperties {
