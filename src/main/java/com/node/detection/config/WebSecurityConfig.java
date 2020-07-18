@@ -2,8 +2,8 @@ package com.node.detection.config;
 
 
 import com.node.detection.config.handler.MyAuthentiationFailureHandler;
-import com.node.detection.config.handler.MyAuthentiationSuccessHandler;
 import com.node.detection.config.handler.MyAuthenticationEntryPoint;
+import com.node.detection.config.handler.MyAuthenticationSuccessHandler;
 import com.node.detection.config.handler.MyLogoutSuccessHandler;
 import com.node.detection.filter.CustomAuthenticationFilter;
 import com.node.detection.service.impl.UserDetailsServiceImpl;
@@ -20,15 +20,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * WebSecurityConfigurerAdapter 提供了一种便利的方式去创建 WebSecurityConfigurer 的实例，
  * 只需要重写 WebSecurityConfigurerAdapter 的方法，
  * 即可配置拦截 URL、设置权限等安全控制。
+ *
+ * @author xinyu
  * @EnableWebSecurity 启用 Spring Security 的 Web 安全支持，并提供 Spring MVC 集成
  * @EnableGlobalMethodSecurity(prePostEnabled = true)// 实现方法级别的权限控制
  * 在控制器上加 '@PreAuthorize("hasRole('ADMIN')")'， 只有拥有此角色的用户才能调用此接口
- * @author xinyu
  */
 
 @Configuration
@@ -38,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyAuthentiationFailureHandler myAuthentiationFailureHandler;
     @Autowired
-    private MyAuthentiationSuccessHandler myAuthentiationSuccessHandler;
+    private MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
     @Autowired
     private MyLogoutSuccessHandler myLogoutSuccessHandler;
     @Autowired
@@ -64,9 +68,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(
+                "/swagger-ui.html", "/swagger/*",
                         "/ws", "/", "/user/login_page", "/swagger-ui.html", "/mongodb",
                         "/kaptcha", "/hello", "/login", "/login?error", "/user/save",
-                        "/node/find", "/user/find_role", "/checkVerifyCode"
+                        "/node/find", "/user/find_role", "/checkVerifyCode", "/druid/*"
                 )
                 .permitAll()
                 .anyRequest().authenticated()  // 其他请求,登录后可以访问
@@ -92,9 +97,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 关闭 csrf 防御机制
                 .csrf().disable()
                 // 定制我们自己的 session 策略：调整为让 Spring Security 不创建和使用 session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-                .and()
+//                .and()
                 .exceptionHandling() // 用户访问没有权限的接口，不使用重定向，直接返回JSON提示。
                 .authenticationEntryPoint(myAuthenticationEntryPoint)
         ;
@@ -104,7 +109,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web){
+    public void configure(WebSecurity web) {
         // 忽略URL
         web.ignoring()
                 .antMatchers(
@@ -117,9 +122,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/configuration/security",
                         "/swagger-ui.html",
                         "/webjars/**",
-                        "/doc.html"
+                        "/doc.html",
+                        "/druid/**"
                 );
     }
+
     @Bean
 
     public PasswordEncoder passwordEncoderBean() {
@@ -148,7 +155,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
         CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
-        filter.setAuthenticationSuccessHandler(myAuthentiationSuccessHandler);
+        filter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler);
         filter.setAuthenticationFailureHandler(myAuthentiationFailureHandler);
         //重用WebSecurityConfigurerAdapter配置的AuthenticationManager
         filter.setAuthenticationManager(authenticationManagerBean());

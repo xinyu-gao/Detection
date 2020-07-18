@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * @author xinyu
+ */
 @Component("myAuthenticationEntryPoint")
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override

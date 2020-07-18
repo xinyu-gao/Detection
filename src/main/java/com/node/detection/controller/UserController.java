@@ -37,8 +37,8 @@ public class UserController {
     }
     @PostMapping("/find_role")
     public HttpResult findRole(@RequestBody SysUser sysUser){
-        log.info(sysUser.getUsername())
-;        Long id = userService.findByUsername(sysUser.getUsername()).getId();
+        log.info(sysUser.getUsername());
+        Long id = userService.findByUsername(sysUser.getUsername()).getId();
         List<String> result = userService.findRolesByUserId(id);
         return HttpResult.ok(result);
     }

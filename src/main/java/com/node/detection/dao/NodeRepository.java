@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
+
 /**
  * @author chengzi
  */
@@ -16,10 +18,11 @@ public interface NodeRepository extends JpaRepository<Node, Long> {
      * @param name 节点名
      * @return 节点信息
      */
+    @Transactional
     Node findByName(String name);
 
     /**
-     * select * from node where type = ? limit
+     * select * from node where type = ? limit 1, 3
      * @param type 节点类型
      * @param pageable 分页
      * @return 节点信息分页结果

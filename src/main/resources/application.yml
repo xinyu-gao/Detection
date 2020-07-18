@@ -56,6 +56,10 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: update
+
+
+
+
   data:
     mongodb:
       host: 175.24.147.229

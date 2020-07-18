@@ -15,11 +15,16 @@ import java.util.Properties;
 /**
  * @author chengzi
  */
+
+/**
+ * @EnableConfigurationProperties(KaptchaProperties.class) 引入属性类
+ */
 @Configuration
 @EnableConfigurationProperties(KaptchaProperties.class)
 public class KaptchaAutoConfiguration {
 
     @Autowired
+//    @Value("kaptcha.border.have")
     private KaptchaProperties kaptchaProperties;
 
     @Bean(name = "kaptchaProducer")

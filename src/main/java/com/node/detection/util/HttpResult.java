@@ -74,10 +74,6 @@ public class HttpResult implements Serializable {
                 .setData(data);
     }
 
-    public static HttpResult ok() {
-        return new HttpResult();
-    }
-
 
     public HttpResult setStatus(int status) {
         this.status = status;

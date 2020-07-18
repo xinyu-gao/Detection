@@ -26,6 +26,6 @@ public class NodeServiceImpl implements NodeService {
     @Override
     public <T> PageResult<Node> findByType(String type, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return PageResult.restructure(nodeRepository.findByType(type, pageable));
+        return PageResult.restructure(nodeRepository .findByType(type, pageable));
     }
 }

@@ -1,7 +1,9 @@
 package com.node.detection.entity.mysql;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -30,7 +32,8 @@ public class Node implements Serializable {
     /**
      * 节点地址
      */
-    private Address address;
+    @Column(name = "home_adderss")
+    private Address homeAddress;
     /**
      * 节点监控的值
      */

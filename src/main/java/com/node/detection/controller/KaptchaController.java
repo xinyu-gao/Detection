@@ -1,5 +1,6 @@
 package com.node.detection.controller;
 
+import com.node.detection.entity.Result;
 import com.node.detection.service.CommonService;
 import com.node.detection.util.HttpResult;
 import com.node.detection.util.KaptchaUtil;
@@ -20,6 +21,8 @@ import java.awt.image.BufferedImage;
 public class KaptchaController {
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private Result result;
 
     @ApiOperation(value = "请求验证码", notes = "资源路径请求")
     @GetMapping("/kaptcha")
@@ -31,8 +34,9 @@ public class KaptchaController {
     @GetMapping("/checkVerifyCode")
     @ResponseBody
     public HttpResult checkVerifyCode(HttpServletRequest request) {
-        return HttpResult.ok(KaptchaUtil.checkVerifyCode(request));
+        log.info(""+KaptchaUtil.checkVerifyCode(request));
+        result.setResult(KaptchaUtil.checkVerifyCode(request));
+        return HttpResult.ok(result);
     }
-
 
 }

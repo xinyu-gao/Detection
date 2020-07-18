@@ -1,17 +1,12 @@
 package com.node.detection.util;
 
 import com.google.code.kaptcha.Constants;
-import com.google.code.kaptcha.Producer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -50,11 +45,12 @@ public class KaptchaUtil {
      * @param request http 请求
      * @return 验证码是否正确
      */
-    public static boolean checkVerifyCode(HttpServletRequest request) {
+    public static Boolean checkVerifyCode(HttpServletRequest request) {
         //获取生成的验证码
         String verifyCodeExpected = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
         //获取用户输入的验证码
         String verifyCodeActual = KaptchaUtil.getString(request, "verifyCodeActual");
+        log.info(verifyCodeExpected+verifyCodeActual);
         return verifyCodeActual != null && verifyCodeActual.equalsIgnoreCase(verifyCodeExpected);
     }
 
