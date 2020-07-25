@@ -13,7 +13,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * @author xinyu
- * @ServerEndpoint 这个注解用于标识作用在类上
+ * '@ServerEndpoint' 这个注解用于标识作用在类上
  * 它的主要功能是把当前类标识成一个 WebSocket 的服务端
  * 注解的值用户客户端连接访问的 URL 地址
  */

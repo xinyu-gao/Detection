@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 
 
+/**
+ * @author xinyu
+ */
 @Controller
 @Slf4j
 public class KaptchaController {

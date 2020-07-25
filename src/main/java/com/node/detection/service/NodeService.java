@@ -19,6 +19,7 @@ public interface NodeService {
      * @param type 节点类型
      * @param page 开始页
      * @param size 查询的数据大小
+     * @param <T> 泛型
      * @return 多个节点信息
      */
     public <T> PageResult<Node> findByType(String type, int page, int size);

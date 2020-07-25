@@ -30,8 +30,8 @@ import javax.servlet.http.HttpServletRequest;
  * 即可配置拦截 URL、设置权限等安全控制。
  *
  * @author xinyu
- * @EnableWebSecurity 启用 Spring Security 的 Web 安全支持，并提供 Spring MVC 集成
- * @EnableGlobalMethodSecurity(prePostEnabled = true)// 实现方法级别的权限控制
+ * '@EnableWebSecurity' 启用 Spring Security 的 Web 安全支持，并提供 Spring MVC 集成
+ * '@EnableGlobalMethodSecurity(prePostEnabled = true)' // 实现方法级别的权限控制
  * 在控制器上加 '@PreAuthorize("hasRole('ADMIN')")'， 只有拥有此角色的用户才能调用此接口
  */
 
@@ -74,8 +74,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/node/find", "/user/find_role", "/checkVerifyCode", "/druid/*"
                 )
                 .permitAll()
-                .anyRequest().authenticated()  // 其他请求,登录后可以访问
-
+                // 其他请求,登录后可以访问
+                .anyRequest().authenticated()
                 //登录地址、方法
                 .and().formLogin()
                 .loginProcessingUrl("/login")
@@ -92,14 +92,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenValiditySeconds(86400 * 7)
                 //保存的cookie键名
                 .key("remember-me-key")
-
-                .and()
                 // 关闭 csrf 防御机制
+                .and()
                 .csrf().disable()
                 // 定制我们自己的 session 策略：调整为让 Spring Security 不创建和使用 session
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-//                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .exceptionHandling() // 用户访问没有权限的接口，不使用重定向，直接返回JSON提示。
                 .authenticationEntryPoint(myAuthenticationEntryPoint)
         ;

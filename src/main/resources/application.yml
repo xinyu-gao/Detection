@@ -1,6 +1,8 @@
 server:
-  port: 8081
-
+  port: 23081
+socket:
+  port: 23245
+  ip: 0.0.0.0
 spring:
   datasource:
     # 使用阿里的 Druid 连接池

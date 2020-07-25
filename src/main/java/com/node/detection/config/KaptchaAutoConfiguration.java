@@ -17,7 +17,7 @@ import java.util.Properties;
  */
 
 /**
- * @EnableConfigurationProperties(KaptchaProperties.class) 引入属性类
+ * '@EnableConfigurationProperties(KaptchaProperties.class)' 引入属性类
  */
 @Configuration
 @EnableConfigurationProperties(KaptchaProperties.class)

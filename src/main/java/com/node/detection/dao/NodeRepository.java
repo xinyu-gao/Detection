@@ -18,7 +18,6 @@ public interface NodeRepository extends JpaRepository<Node, Long> {
      * @param name 节点名
      * @return 节点信息
      */
-    @Transactional
     Node findByName(String name);
 
     /**
