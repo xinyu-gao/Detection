@@ -5,7 +5,10 @@ import com.node.detection.config.handler.MyAuthentiationFailureHandler;
 import com.node.detection.config.handler.MyAuthenticationEntryPoint;
 import com.node.detection.config.handler.MyAuthenticationSuccessHandler;
 import com.node.detection.config.handler.MyLogoutSuccessHandler;
+import com.node.detection.exception.JWTAuthenticationEntryPoint;
 import com.node.detection.filter.CustomAuthenticationFilter;
+import com.node.detection.filter.JwtAuthenticationFilter;
+import com.node.detection.filter.JwtAuthorizationFilter;
 import com.node.detection.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -66,6 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                // 关闭 csrf 防御机制
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(
                 "/swagger-ui.html", "/swagger/*",
@@ -74,36 +79,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/node/find", "/user/find_role", "/checkVerifyCode", "/druid/*"
                 )
                 .permitAll()
-                // 其他请求,登录后可以访问
-                .anyRequest().authenticated()
-                //登录地址、方法
-                .and().formLogin()
-                .loginProcessingUrl("/login")
-                .permitAll()
-                .and().logout() // 配置登出账号
-                // 登出请求路径
-                .logoutUrl("/logout")
-                //成功处理器，返回 JSON
-                .logoutSuccessHandler(myLogoutSuccessHandler)
-                .permitAll() // 登出
-                // remember me功能
-                .and().rememberMe()
-                //有效时间
-                .tokenValiditySeconds(86400 * 7)
-                //保存的cookie键名
-                .key("remember-me-key")
-                // 关闭 csrf 防御机制
+//                // 其他请求,登录后可以访问
+//                .anyRequest().authenticated()
+//                //登录地址、方法
+//                .and().formLogin()
+//                .loginProcessingUrl("/login")
+//                .permitAll()
                 .and()
-                .csrf().disable()
-                // 定制我们自己的 session 策略：调整为让 Spring Security 不创建和使用 session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                // 添加JWT登录拦截器
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                // 添加JWT鉴权拦截器
+                .addFilter(new JwtAuthorizationFilter(authenticationManager()))
+                .sessionManagement()
+                // 设置Session的创建策略为：Spring Security永不创建HttpSession 不使用HttpSession来获取SecurityContext
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .exceptionHandling() // 用户访问没有权限的接口，不使用重定向，直接返回JSON提示。
-                .authenticationEntryPoint(myAuthenticationEntryPoint)
+
+                // 用户访问没有权限的接口，不使用重定向，直接返回JSON提示。
+                .exceptionHandling()
+                .authenticationEntryPoint(new JWTAuthenticationEntryPoint());
         ;
-
-
-        http.addFilterAt(customAuthenticationFilter(), CustomAuthenticationFilter.class);
     }
 
     @Override
@@ -147,16 +142,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoderBean());
     }
 
-    /**
-     * 注册自定义的 UsernamePasswordAuthenticationFilter
-     */
-    @Bean
-    CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
-        CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
-        filter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler);
-        filter.setAuthenticationFailureHandler(myAuthentiationFailureHandler);
-        //重用WebSecurityConfigurerAdapter配置的AuthenticationManager
-        filter.setAuthenticationManager(authenticationManagerBean());
-        return filter;
-    }
+//    /**
+//     * 注册自定义的 UsernamePasswordAuthenticationFilter
+//     */
+//    @Bean
+//    CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
+//        CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
+//        filter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler);
+//        filter.setAuthenticationFailureHandler(myAuthentiationFailureHandler);
+//        //重用WebSecurityConfigurerAdapter配置的AuthenticationManager
+//        filter.setAuthenticationManager(authenticationManagerBean());
+//        return filter;
+//    }
 }

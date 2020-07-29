@@ -1,7 +1,10 @@
 package com.node.detection.util;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -26,10 +29,11 @@ public class HttpResult implements Serializable {
     /**
      * 发生错误，状态码400，显示错误的相关信息，例如：
      * {
-     *     "status": 400,
-     *     "message": "username is already exist",
-     *     "data": null
+     * "status": 400,
+     * "message": "username is already exist",
+     * "data": null
      * }
+     *
      * @param message 错误信息
      * @return 整合后的数据结果
      */
@@ -38,14 +42,16 @@ public class HttpResult implements Serializable {
                 .setStatus(400)
                 .setMessage(message);
     }
+
     /**
      * 发生错误，状态码自定义，显示错误的相关信息，例如：
      * {
-     *     "status": 400,
-     *     "message": "username is already exist",
-     *     "data": null
+     * "status": 400,
+     * "message": "username is already exist",
+     * "data": null
      * }
-     * @param status HTTP 状态码
+     *
+     * @param status  HTTP 状态码
      * @param message 错误信息
      * @return 整合后的数据结果
      */
@@ -58,12 +64,13 @@ public class HttpResult implements Serializable {
     /**
      * 成功处理了请求， message 默认为 success, 例如：
      * {
-     *     "status": 200,
-     *     "message": "success",
-     *     "data": {
-     *         ...
-     *     }
+     * "status": 200,
+     * "message": "success",
+     * "data": {
+     * ...
      * }
+     * }
+     *
      * @param data 返回的数据data
      * @return 整合后的数据结果
      */
@@ -74,6 +81,15 @@ public class HttpResult implements Serializable {
                 .setData(data);
     }
 
+    public static void responseOk(HttpServletResponse response, Object data) throws IOException {
+        response.setContentType("text/javascript;charset=utf-8");
+        response.getWriter().print(JSONObject.toJSONString(ok(data)));
+    }
+
+    public static void responseError(HttpServletResponse response, String message) throws IOException {
+        response.setContentType("text/javascript;charset=utf-8");
+        response.getWriter().print(JSONObject.toJSONString(error(message)));
+    }
 
     public HttpResult setStatus(int status) {
         this.status = status;

@@ -5,6 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * @author xinyu
+ */
 public interface CommonService {
     /**
      * 生成验证码文本和图片，验证码文本存到 session 中，

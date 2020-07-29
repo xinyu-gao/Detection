@@ -11,6 +11,7 @@ import com.node.detection.service.UserService;
 import com.node.detection.util.EncoderUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
         SysUser user = findByUsername(sysUser.getUsername());
         if(user == null){
             //加密密码
-            String passwordAfterEncode = EncoderUtil.passwordEncoder().encode(sysUser.getPassword());
+            String passwordAfterEncode = new BCryptPasswordEncoder().encode(sysUser.getPassword());
             sysUser.setPassword(passwordAfterEncode);
             userRepository.saveAndFlush(sysUser);
         }else {

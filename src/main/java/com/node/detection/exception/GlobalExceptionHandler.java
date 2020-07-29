@@ -25,10 +25,10 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public HttpResult defaultErrorHandler(HttpServletRequest req, Throwable e) {
+    public HttpResult defaultErrorHandler(HttpServletRequest request, Throwable e) {
         String message = e.getMessage();
         // [请求的URL] + 消息
-        log.error("[" + req.getRequestURI() + "]：" + message);
+        log.error("[" + request.getRequestURI() + "]：" + message);
         return HttpResult.error(message);
     }
 }

@@ -5,7 +5,6 @@ import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
 import com.node.detection.entity.KaptchaProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,19 +12,20 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Properties;
 
 /**
- * @author chengzi
- */
-
-/**
  * '@EnableConfigurationProperties(KaptchaProperties.class)' 引入属性类
+ * @author xinyu
  */
 @Configuration
 @EnableConfigurationProperties(KaptchaProperties.class)
 public class KaptchaAutoConfiguration {
 
+
+    private final KaptchaProperties kaptchaProperties;
+
     @Autowired
-//    @Value("kaptcha.border.have")
-    private KaptchaProperties kaptchaProperties;
+    public KaptchaAutoConfiguration(KaptchaProperties kaptchaProperties) {
+        this.kaptchaProperties = kaptchaProperties;
+    }
 
     @Bean(name = "kaptchaProducer")
     public DefaultKaptcha getKaptchaBean() {
@@ -58,6 +58,7 @@ public class KaptchaAutoConfiguration {
         properties.setProperty(Constants.KAPTCHA_OBSCURIFICATOR_IMPL, kaptchaProperties.getObscurificator().getImpl());
         properties.setProperty(Constants.KAPTCHA_SESSION_KEY, kaptchaProperties.getSession().getKey());
         properties.setProperty(Constants.KAPTCHA_SESSION_DATE, kaptchaProperties.getSession().getDate());
+
         Config config = new Config(properties);
         defaultKaptcha.setConfig(config);
         return defaultKaptcha;
