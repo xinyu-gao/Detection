@@ -77,16 +77,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 
                 // 允许对于无授权访问的 URL
-                .antMatchers(
-                        "/swagger-ui.html", "/swagger/*",
-                        "/ws", "/", "/user/login_page", "/swagger-ui.html", "/mongodb",
-                        "/kaptcha", "/hello", "/login", "/login?error", "/user/save",
-                        "/node/find", "/user/find_role", "/checkVerifyCode", "/druid/*"
-                ).permitAll()
+//                .antMatchers(
+//                        "/swagger-ui.html", "/swagger/*",
+//                        "/ws", "/", "/user/login_page", "/swagger-ui.html", "/mongodb",
+//                        "/kaptcha", "/hello", "/login", "/login?error", "/user/save",
+//                        "/node/find", "/user/find_role", "/checkVerifyCode", "/druid/*"
+//                ).permitAll()
 
                 // 测试时全部运行访问
-//                .antMatchers("/**")
-//                .permitAll()
+                .antMatchers("/**","/node/save")
+                .permitAll()
 
                 // 添加 JWT 登录拦截器、鉴权拦截器
                 .and()

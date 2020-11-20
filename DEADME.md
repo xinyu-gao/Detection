@@ -98,3 +98,8 @@
 
    注意防火墙端口号。
 
+### 4. 其他问题
+
+1. jpa 构建数据库时，字段顺序混乱：
+
+   https://blog.csdn.net/xqnode/article/details/102470380

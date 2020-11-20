@@ -1,6 +1,8 @@
 package com.node.detection.controller;
 
-import com.node.detection.entity.mysql.Node;
+import com.node.detection.dao.WsNodeRepository;
+import com.node.detection.entity.mongo.Node;
+import com.node.detection.entity.ws.WsNode;
 import com.node.detection.service.NodeService;
 import com.node.detection.util.HttpResult;
 import io.swagger.annotations.ApiOperation;
@@ -22,9 +24,19 @@ public class NodeController {
     @Autowired
     private NodeService nodeService;
 
-    @ApiOperation("查询node信息")
-    @PostMapping("/find")
-    public HttpResult findNode(@RequestBody Node node){
-        return HttpResult.success(nodeService.findByType(node.getType(),0,2));
+    @Autowired
+    private WsNodeRepository wsNodeRepository;
+
+//    @ApiOperation("查询node信息")
+//    @PostMapping("/find")
+//    public HttpResult findNode(@RequestBody Node node){
+//        return HttpResult.success(nodeService.findByType(node.getIMSI(),0,2));
+//    }
+
+
+    @ApiOperation("新增node信息")
+    @PostMapping("/save")
+    public HttpResult insertNode(@RequestBody WsNode node){
+        return HttpResult.success(wsNodeRepository.save(node));
     }
 }
