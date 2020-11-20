@@ -1,7 +1,6 @@
 package com.node.detection.controller;
 
 import com.node.detection.entity.Result;
-import com.node.detection.entity.mysql.SysUser;
 import com.node.detection.service.CommonService;
 import com.node.detection.util.HttpResult;
 import com.node.detection.util.KaptchaUtil;
@@ -10,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +39,7 @@ public class KaptchaController {
     public HttpResult checkVerifyCode(HttpServletRequest request) {
         log.info(""+KaptchaUtil.checkVerifyCode(request));
         result.setResult(KaptchaUtil.checkVerifyCode(request));
-        return HttpResult.ok(result);
+        return HttpResult.success(result);
     }
 
 }

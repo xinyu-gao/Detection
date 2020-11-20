@@ -29,6 +29,6 @@ public class GlobalExceptionHandler {
         String message = e.getMessage();
         // [请求的URL] + 消息
         log.error("[" + request.getRequestURI() + "]：" + message);
-        return HttpResult.error(message);
+        return HttpResult.failed(message);
     }
 }

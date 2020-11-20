@@ -22,9 +22,9 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
         httpServletResponse.setContentType("application/json;charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
         if (e instanceof InsufficientAuthenticationException) {
-            out.write(JSON.toJSONString(HttpResult.error("need authority")));
+            out.write(JSON.toJSONString(HttpResult.unauthorized("need authority")));
         } else {
-            out.write(JSON.toJSONString(HttpResult.error("unknown error")));
+            out.write(JSON.toJSONString(HttpResult.failed("unknown error")));
         }
         out.close();
     }

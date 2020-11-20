@@ -1,4 +1,4 @@
-package com.node.detection.controller;
+package com.node.detection.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -20,14 +20,14 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Slf4j
 @Component
 @ServerEndpoint("/ws")
-public class WsController {
+public class WebSocketService {
 
      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     /**
      * concurrent 包的线程安全 Set，用来存放每个客户端对应的 WebSocket 对象。
      */
-    private final CopyOnWriteArraySet<WsController> webSocketSet = new CopyOnWriteArraySet<>();
+    private final CopyOnWriteArraySet<WebSocketService> webSocketSet = new CopyOnWriteArraySet<>();
 
     /**
      *  与某个客户端的连接会话，需要通过它来给客户端发送数据
@@ -95,7 +95,7 @@ public class WsController {
      */
     public void sendInfo(Object message) throws IOException, EncodeException {
         log.info("websocket群发消息，消息：" + message);
-        for (WsController item : webSocketSet) {
+        for (WebSocketService item : webSocketSet) {
             item.sendMessage(message);
         }
     }
@@ -108,7 +108,7 @@ public class WsController {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        WsController that = (WsController) o;
+        WebSocketService that = (WebSocketService) o;
         return Objects.equals(webSocketSet, that.webSocketSet) &&
                 Objects.equals(session, that.session);
     }

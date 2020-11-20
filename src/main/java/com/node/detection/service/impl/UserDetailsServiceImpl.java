@@ -11,13 +11,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author xinyu
+ * 登录时查询 user 信息服务
  */
 @Slf4j
 @Service
@@ -30,18 +31,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws ServiceException {
 
         SysUser users = userService.findByUsername(username);
-
         if (users == null) {
-            throw new ServiceException("username not found");
+            throw new UsernameNotFoundException("username not found");
         }
+
         String password = users.getPassword();
-        long userId = users.getId();
-        List<String> userRoles = userService.findRolesByUserId(userId);
+        List<String> userRoles = userService.findRolesByUserId(users.getId());
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for(String role : userRoles){
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role);
-            authorities.add(grantedAuthority);
-        }
+        for(String role : userRoles) authorities.add(new SimpleGrantedAuthority(role));
+
         log.info("grantedAuthority:" + JSON.toJSONString(authorities));
         return User.builder()
                 .username(username)

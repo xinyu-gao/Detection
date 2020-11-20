@@ -25,20 +25,23 @@ public class UserController {
     @PostMapping("/save")
     public HttpResult saveUser(@Validated @RequestBody SysUser sysUser) throws Exception {
         userService.saveUser(sysUser);
-        return HttpResult.ok(true);
+        return HttpResult.success(true);
     }
+
     @PostMapping("/find")
-    public HttpResult findUser(@RequestBody SysUser sysUser){
+    public HttpResult findUser(@RequestBody SysUser sysUser) {
         SysUser result = userService.findByUsername(sysUser.getUsername());
-        return HttpResult.ok(result);
+        return HttpResult.success(result);
     }
+
     @PostMapping("/find_role")
-    public HttpResult findRole(@RequestBody SysUser sysUser){
+    public HttpResult findRole(@RequestBody SysUser sysUser) {
         log.info(sysUser.getUsername());
         Long id = userService.findByUsername(sysUser.getUsername()).getId();
         List<String> result = userService.findRolesByUserId(id);
-        return HttpResult.ok(result);
+        return HttpResult.success(result);
     }
+
     @PostMapping("/logins")
     @ResponseBody
     public SysUser getKaptchaImages(SysUser sysUser) throws Exception {

@@ -1,6 +1,7 @@
 package com.node.detection.entity.mysql;
 
 
+import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -31,13 +31,13 @@ public class SysUser implements Serializable, UserDetails {
     /**
      * 用户名
      */
-    @NotNull(message = "username is null")
+//    @NotNull(message = "username is null")
     private String username;
 
     /**
      * 用户密码
      */
-    @NotNull(message = "password is null")
+//    @NotNull(message = "password is null")
     private String password;
 
 

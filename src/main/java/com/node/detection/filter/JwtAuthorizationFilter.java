@@ -1,11 +1,7 @@
 package com.node.detection.filter;
 
-import com.alibaba.fastjson.JSONObject;
-import com.node.detection.util.HttpResult;
 import com.node.detection.util.JwtTokenUtil;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -66,7 +62,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         // 从Token中解密获取用户角色
         String role = JwtTokenUtil.getUserRole(token);
         // 将[ROLE_XXX,ROLE_YYY]格式的角色字符串转换为数组
-        String[] roles = StringUtils.strip(role, "[]").split(", ");
+//        String[] roles = StringUtils.strip(role, "[]").split(", ");
+        String[] roles = new String[]{role};
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (String s : roles) {
             authorities.add(new SimpleGrantedAuthority(s));

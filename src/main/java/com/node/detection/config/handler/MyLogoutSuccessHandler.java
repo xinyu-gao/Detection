@@ -20,7 +20,7 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         httpServletResponse.setContentType("application/json;charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
-        out.write(JSON.toJSONString(HttpResult.ok("logout success")));
+        out.write(JSON.toJSONString(HttpResult.success("logout success")));
         out.close();
     }
 }

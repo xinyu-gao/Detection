@@ -11,6 +11,7 @@ import com.node.detection.filter.JwtAuthenticationFilter;
 import com.node.detection.filter.JwtAuthorizationFilter;
 import com.node.detection.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -50,8 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyLogoutSuccessHandler myLogoutSuccessHandler;
     @Autowired
     private MyAuthenticationEntryPoint myAuthenticationEntryPoint;
+    @Qualifier("userDetailsServiceImpl")
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Bean
     @Override
@@ -72,30 +75,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 关闭 csrf 防御机制
                 .csrf().disable()
                 .authorizeRequests()
+
+                // 允许对于无授权访问的 URL
                 .antMatchers(
-                "/swagger-ui.html", "/swagger/*",
+                        "/swagger-ui.html", "/swagger/*",
                         "/ws", "/", "/user/login_page", "/swagger-ui.html", "/mongodb",
                         "/kaptcha", "/hello", "/login", "/login?error", "/user/save",
                         "/node/find", "/user/find_role", "/checkVerifyCode", "/druid/*"
-                )
-                .permitAll()
-//                // 其他请求,登录后可以访问
-//                .anyRequest().authenticated()
-//                //登录地址、方法
-//                .and().formLogin()
-//                .loginProcessingUrl("/login")
+                ).permitAll()
+
+                // 测试时全部运行访问
+//                .antMatchers("/**")
 //                .permitAll()
+
+                // 添加 JWT 登录拦截器、鉴权拦截器
                 .and()
-                // 添加JWT登录拦截器
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-                // 添加JWT鉴权拦截器
                 .addFilter(new JwtAuthorizationFilter(authenticationManager()))
+
+                /*
+                设置 Session 的创建策略为：
+                    Spring Security 永不创建 HttpSession
+                    不使用 HttpSession 来获取S ecurityContext
+                 */
                 .sessionManagement()
-                // 设置Session的创建策略为：Spring Security永不创建HttpSession 不使用HttpSession来获取SecurityContext
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
 
                 // 用户访问没有权限的接口，不使用重定向，直接返回JSON提示。
+                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new JWTAuthenticationEntryPoint());
         ;
@@ -138,7 +145,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //加入数据库验证类，际上在验证链中加入了一个 DaoAuthenticationProvider
-        auth.userDetailsService(userDetailsService)
+        auth.userDetailsService(userDetailsService())
                 .passwordEncoder(passwordEncoderBean());
     }
 

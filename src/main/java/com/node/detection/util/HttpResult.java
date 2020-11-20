@@ -1,110 +1,116 @@
 package com.node.detection.util;
 
-import com.alibaba.fastjson.JSONObject;
+
 import lombok.Data;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.Serializable;
-
 /**
- * @author xinyu
+ * 通用返回对象
+ * Created by macro on 2019/4/19.
  */
 @Data
-public class HttpResult implements Serializable {
-
+public class HttpResult<T> {
     /**
-     * HTTP 状态码
+     * 状态码
      */
-    private int status;
+    private long code;
     /**
-     * 结果消息
+     * 提示信息
      */
     private String message;
     /**
-     * 结果数据
+     * 数据封装
      */
-    private Object data;
+    private T data;
+
+
 
     /**
-     * 发生错误，状态码400，显示错误的相关信息，例如：
-     * {
-     * "status": 400,
-     * "message": "username is already exist",
-     * "data": null
-     * }
+     * 成功返回结果
      *
-     * @param message 错误信息
-     * @return 整合后的数据结果
+     * @param data 获取的数据
      */
-    public static HttpResult error(String message) {
-        return new HttpResult()
-                .setStatus(400)
-                .setMessage(message);
+    public static <T> HttpResult<T> success(T data) {
+        return new HttpResult<T>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
     }
 
     /**
-     * 发生错误，状态码自定义，显示错误的相关信息，例如：
-     * {
-     * "status": 400,
-     * "message": "username is already exist",
-     * "data": null
-     * }
+     * 成功返回结果
      *
-     * @param status  HTTP 状态码
-     * @param message 错误信息
-     * @return 整合后的数据结果
+     * @param data    获取的数据
+     * @param message 提示信息
      */
-    public static HttpResult error(int status, String message) {
-        return new HttpResult()
-                .setStatus(status)
-                .setMessage(message);
+    public static <T> HttpResult<T> success(T data, String message) {
+        return new HttpResult<T>(ResultCode.SUCCESS.getCode(), message, data);
     }
 
     /**
-     * 成功处理了请求， message 默认为 success, 例如：
-     * {
-     * "status": 200,
-     * "message": "success",
-     * "data": {
-     * ...
-     * }
-     * }
+     * 失败返回结果
      *
-     * @param data 返回的数据data
-     * @return 整合后的数据结果
+     * @param errorCode 错误码
      */
-    public static HttpResult ok(Object data) {
-        return new HttpResult()
-                .setStatus(200)
-                .setMessage("success")
-                .setData(data);
+    public static <T> HttpResult<T> failed(ResultCode errorCode) {
+        return new HttpResult<T>(errorCode.getCode(), errorCode.getMessage(), null);
     }
 
-    public static void responseOk(HttpServletResponse response, Object data) throws IOException {
-        response.setContentType("text/javascript;charset=utf-8");
-        response.getWriter().print(JSONObject.toJSONString(ok(data)));
+    /**
+     * 失败返回结果
+     *
+     * @param errorCode 错误码
+     * @param message   错误信息
+     */
+    public static <T> HttpResult<T> failed(ResultCode errorCode, String message) {
+        return new HttpResult<>(errorCode.getCode(), message, null);
     }
 
-    public static void responseError(HttpServletResponse response, String message) throws IOException {
-        response.setContentType("text/javascript;charset=utf-8");
-        response.getWriter().print(JSONObject.toJSONString(error(message)));
+    /**
+     * 失败返回结果
+     *
+     * @param message 提示信息
+     */
+    public static <T> HttpResult<T> failed(String message) {
+        return new HttpResult<>(ResultCode.FAILED.getCode(), message, null);
     }
 
-    public HttpResult setStatus(int status) {
-        this.status = status;
-        return this;
+    /**
+     * 失败返回结果
+     */
+    public static <T> HttpResult<T> failed() {
+        return failed(ResultCode.FAILED);
     }
 
+    /**
+     * 参数验证失败返回结果
+     */
+    public static <T> HttpResult<T> validateFailed() {
+        return failed(ResultCode.VALIDATE_FAILED);
+    }
 
-    public HttpResult setMessage(String message) {
+    /**
+     * 参数验证失败返回结果
+     *
+     * @param message 提示信息
+     */
+    public static <T> HttpResult<T> validateFailed(String message) {
+        return new HttpResult<>(ResultCode.VALIDATE_FAILED.getCode(), message, null);
+    }
+
+    /**
+     * 未登录返回结果
+     */
+    public static <T> HttpResult<T> unauthorized(T data) {
+        return new HttpResult<>(ResultCode.UNAUTHORIZED.getCode(), ResultCode.UNAUTHORIZED.getMessage(), data);
+    }
+
+    /**
+     * 未授权返回结果
+     */
+    public static <T> HttpResult<T> forbidden(T data) {
+        return new HttpResult<T>(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMessage(), data);
+    }
+
+    private HttpResult(long code, String message, T data) {
+        this.code = code;
         this.message = message;
-        return this;
-    }
-
-    public HttpResult setData(Object data) {
         this.data = data;
-        return this;
     }
-
 }

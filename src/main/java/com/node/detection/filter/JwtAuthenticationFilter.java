@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -66,15 +65,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Map<String,String> map = new HashMap<>(1);
         map.put("token",token);
         // 将反馈塞到HttpServletResponse中返回给前台
-        response.getWriter().write(JSON.toJSONString(HttpResult.ok(map)));
+        response.getWriter().write(JSON.toJSONString(HttpResult.success(map)));
     }
 
     /**
      * 验证【失败】调用的方法
      */
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        String returnData = "";
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException{
+        String returnData;
         log.info("shibai");
         // 账号过期
         if (failed instanceof AccountExpiredException) {
@@ -108,6 +107,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // 处理编码方式 防止中文乱码
         response.setContentType("application/json;charset=utf-8");
         // 将反馈塞到HttpServletResponse中返回给前台
-        response.getWriter().write(JSON.toJSONString(HttpResult.error(returnData)));
+        response.getWriter().write(JSON.toJSONString(HttpResult.failed(returnData)));
     }
 }
