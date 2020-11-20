@@ -1,4 +1,4 @@
-package com.node.detection.entity;
+package com.node.detection.entity.prop;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
