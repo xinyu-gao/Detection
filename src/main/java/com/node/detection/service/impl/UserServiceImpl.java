@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SysUser findByUsername(String username) {
-        log.info(JSON.toJSONString(userRepository.findByUsername(username)));
         return userRepository.findByUsername(username);
     }
 
@@ -53,7 +52,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> findRolesByUserId(Long userId) {
-        log.info(""+userId);
         List<UserRoles> userRoles = userRoleRepository.findByUserId(userId);
 
         List<String> roles = new ArrayList<>();

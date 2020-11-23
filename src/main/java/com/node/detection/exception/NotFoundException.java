@@ -16,7 +16,7 @@ public class NotFoundException implements ErrorController {
 
     @RequestMapping("/error")
     public HttpResult error(){
-        return HttpResult.unauthorized(null);
+        return HttpResult.failed("404 not found");
     }
 
     @Override

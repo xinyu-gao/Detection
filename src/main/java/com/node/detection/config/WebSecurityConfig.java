@@ -77,16 +77,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 
                 // 允许对于无授权访问的 URL
-//                .antMatchers(
-//                        "/swagger-ui.html", "/swagger/*",
-//                        "/ws", "/", "/user/login_page", "/swagger-ui.html", "/mongodb",
-//                        "/kaptcha", "/hello", "/login", "/login?error", "/user/save",
-//                        "/node/find", "/user/find_role", "/checkVerifyCode", "/druid/*"
-//                ).permitAll()
+                .antMatchers(
+                        "/swagger-ui.html", "/swagger/*",
+                        "/ws", "/", "/user/login_page", "/swagger-ui.html", "/mongodb",
+                        "/kaptcha", "/hello", "/login", "/login?error", "/user/save",
+                        "/node/find", "/user/find_role", "/checkVerifyCode", "/druid/*"
+                ).permitAll()
 
                 // 测试时全部运行访问
-                .antMatchers("/**","/node/save")
-                .permitAll()
+//                .antMatchers("/**","/node/save")
+//                .permitAll()
 
                 // 添加 JWT 登录拦截器、鉴权拦截器
                 .and()
@@ -142,23 +142,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @param auth 签名管理器构造器，用于构建用户具体权限控制
      * @throws Exception 验证出错
      */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //加入数据库验证类，际上在验证链中加入了一个 DaoAuthenticationProvider
-        auth.userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoderBean());
-    }
-
-//    /**
-//     * 注册自定义的 UsernamePasswordAuthenticationFilter
-//     */
-//    @Bean
-//    CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
-//        CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
-//        filter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler);
-//        filter.setAuthenticationFailureHandler(myAuthentiationFailureHandler);
-//        //重用WebSecurityConfigurerAdapter配置的AuthenticationManager
-//        filter.setAuthenticationManager(authenticationManagerBean());
-//        return filter;
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        //加入数据库验证类，际上在验证链中加入了一个 DaoAuthenticationProvider
+//        auth.userDetailsService(userDetailsService())
+//                .passwordEncoder(passwordEncoderBean());
 //    }
+
 }

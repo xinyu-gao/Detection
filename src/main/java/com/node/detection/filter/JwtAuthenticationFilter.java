@@ -1,8 +1,13 @@
 package com.node.detection.filter;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
+import com.node.detection.entity.mysql.SysUser;
+import com.node.detection.entity.ws.WsNode;
 import com.node.detection.util.HttpResult;
 import com.node.detection.util.JwtTokenUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
@@ -14,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,16 +42,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     /**
      * 验证操作 接收并解析用户凭证
      */
+    @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        try {
-            log.info("reader"+ request.getReader().readLine());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        JSONObject jsonObject = JSONUtil.parseObj(getBodyFromRequest(request));
+        SysUser sysUser = JSONUtil.toBean(jsonObject, SysUser.class);
+        log.info(sysUser.getUsername()+sysUser.getPassword());
         // 从输入流中获取到登录的信息
         // 创建一个 token 并调用 authenticationManager.authenticate() 让 Spring Security 进行验证
-        return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getParameter("username"), request.getParameter("password")));
+        return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(sysUser.getUsername(), sysUser.getPassword()));
     }
 
     /**
@@ -74,7 +79,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException{
         String returnData;
-        log.info("shibai");
+        log.info("登陆失败");
         // 账号过期
         if (failed instanceof AccountExpiredException) {
             returnData = "账号过期";
@@ -108,5 +113,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setContentType("application/json;charset=utf-8");
         // 将反馈塞到HttpServletResponse中返回给前台
         response.getWriter().write(JSON.toJSONString(HttpResult.failed(returnData)));
+    }
+
+    private String getBodyFromRequest(HttpServletRequest request) throws IOException {
+        BufferedReader br;
+        StringBuilder sb = new StringBuilder("");
+        br = request.getReader();
+        String str;
+        while ((str = br.readLine()) != null)
+        {
+            sb.append(str);
+        }
+        br.close();
+        return sb.toString();
     }
 }

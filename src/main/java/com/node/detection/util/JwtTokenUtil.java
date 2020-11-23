@@ -64,13 +64,8 @@ public class JwtTokenUtil {
     /**
      * 校验Token
      */
-    public static Claims checkJwt(String token) {
-        try {
-            return Jwts.parser().setSigningKey(APPSECRET_KEY).parseClaimsJws(token).getBody();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static void checkJwt(String token) {
+        Jwts.parser().setSigningKey(APPSECRET_KEY).parseClaimsJws(token).getBody();
     }
 
     /**

@@ -97,8 +97,8 @@ public class HttpResult<T> {
     /**
      * 未登录返回结果
      */
-    public static <T> HttpResult<T> unauthorized(T data) {
-        return new HttpResult<>(ResultCode.UNAUTHORIZED.getCode(), ResultCode.UNAUTHORIZED.getMessage(), data);
+    public static <T> HttpResult<T> unauthorized(String message) {
+        return new HttpResult(ResultCode.UNAUTHORIZED.getCode(), message);
     }
 
     /**
@@ -112,5 +112,9 @@ public class HttpResult<T> {
         this.code = code;
         this.message = message;
         this.data = data;
+    }
+    private HttpResult(long code, String message) {
+        this.code = code;
+        this.message = message;
     }
 }

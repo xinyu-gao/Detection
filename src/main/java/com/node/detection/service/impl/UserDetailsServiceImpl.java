@@ -2,7 +2,6 @@ package com.node.detection.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.node.detection.entity.mysql.SysUser;
-import com.node.detection.exception.ServiceException;
 import com.node.detection.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +27,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws ServiceException {
-
+    public UserDetails loadUserByUsername(String username) {
+        log.info("username:{}", username);
         SysUser users = userService.findByUsername(username);
         if (users == null) {
             throw new UsernameNotFoundException("username not found");
         }
 
         String password = users.getPassword();
+        log.info("password"+password);
         List<String> userRoles = userService.findRolesByUserId(users.getId());
         List<GrantedAuthority> authorities = new ArrayList<>();
         for(String role : userRoles) authorities.add(new SimpleGrantedAuthority(role));
