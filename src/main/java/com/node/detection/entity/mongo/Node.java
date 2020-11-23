@@ -52,7 +52,7 @@ public class Node implements Serializable {
      * 上传间隔（秒）
      */
     @Field(name = "send_frequency_sec")
-    private String sendFrequencySec;
+    private int sendFrequencySec;
 
     /**
      * IMEI号
@@ -64,25 +64,25 @@ public class Node implements Serializable {
      * 芯片温度
      */
     @Field(name = "mcu_temp")
-    private String mcuTemp;
+    private int mcuTemp;
 
     /**
      * 信号强度
      */
     @Field(name = "signal_power")
-    private String signalPower;
+    private int signalPower;
 
     /**
      * 光线强度
      */
     @Field(name = "bright")
-    private String bright;
+    private int bright;
 
     /**
      * TSI次数
      */
     @Field(name = "touch_num")
-    private String touchNum;
+    private int touchNum;
     /**
      * LBS定位信息
      */

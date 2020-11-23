@@ -16,6 +16,6 @@ public class WebSocketController {
 
     @PostMapping("/testWs")
     public void test(){
-        webSocketClient.send("{\"command\":\"ask\",\"source\":\"web\",\"password\":\"\",\"value\":\"400\"}");
+        webSocketClient.send("{\"command\":\"ask\",\"source\":\"web\",\"password\":\"\",\"value\":\"1\"}");
     }
 }

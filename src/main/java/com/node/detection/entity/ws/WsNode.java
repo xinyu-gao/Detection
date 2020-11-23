@@ -54,7 +54,7 @@ public class WsNode {
     private List<MyData> data;
 
     @Data
-    static class MyData {
+    public static class MyData {
 
         /**
          * 数据类型
