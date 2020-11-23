@@ -4,6 +4,7 @@ import com.node.detection.entity.Result;
 import com.node.detection.service.CommonService;
 import com.node.detection.util.HttpResult;
 import com.node.detection.util.KaptchaUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,14 @@ import java.awt.image.BufferedImage;
  */
 @Controller
 @Slf4j
+@Api("验证码的请求和验证")
 public class KaptchaController {
     @Autowired
     private CommonService commonService;
     @Autowired
     private Result result;
 
-    @ApiOperation(value = "请求验证码", notes = "资源路径请求")
+    @ApiOperation(value = "请求验证码")
     @GetMapping("/kaptcha")
     public void getKaptchaImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         BufferedImage bufferedImage = commonService.createKaptchaAndSaveToSession(request, response);
@@ -36,6 +38,7 @@ public class KaptchaController {
 
     @GetMapping("/checkVerifyCode")
     @ResponseBody
+    @ApiOperation(value = "验证码检查")
     public HttpResult checkVerifyCode(HttpServletRequest request) {
         log.info(""+KaptchaUtil.checkVerifyCode(request));
         result.setResult(KaptchaUtil.checkVerifyCode(request));

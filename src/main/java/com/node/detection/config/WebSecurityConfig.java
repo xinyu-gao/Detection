@@ -77,12 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 
                 // 允许对于无授权访问的 URL
-                .antMatchers(
-                        "/swagger-ui.html", "/swagger/*",
-                        "/ws", "/", "/user/login_page", "/swagger-ui.html", "/mongodb",
-                        "/kaptcha", "/hello", "/login", "/login?error", "/user/save",
-                        "/node/find", "/user/find_role", "/checkVerifyCode", "/druid/*"
-                ).permitAll()
+                .antMatchers("/login").permitAll()
 
                 // 测试时全部运行访问
 //                .antMatchers("/**","/node/save")
@@ -113,17 +108,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 忽略URL
         web.ignoring()
                 .antMatchers(
-                        "/checkVerifyCode",
-                        "/",
-                        "/woo/user/register",
-                        "/v2/**",
-                        "/configuration/ui",
-                        "/swagger-resources/**",
-                        "/configuration/security",
-                        "/swagger-ui.html",
-                        "/webjars/**",
-                        "/doc.html",
-                        "/druid/**"
+                        // Swagger 、Druid 等静态资源
+                        "/", "/woo/user/register", "/v2/**", "/configuration/ui", "/swagger-resources/**",
+                        "/configuration/security", "/swagger-ui.html/**", "/webjars/**", "/doc.html", "/druid/**",
+                        // kaptcha 资源放行
+                        "/kaptcha",  "/checkVerifyCode",
+                        // 注册 资源放行
+                        "/user/save"
                 );
     }
 
