@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
@@ -32,6 +33,9 @@ public class WebSocketConfig {
 
     @Autowired
     private WsNodeService wsNodeService;
+
+    @Autowired
+    private WebSocketClient webSocketClient;
     /**
      * 这个 Bean 会自动注册使用 @ServerEndpoint 注解声明的 websocket endpoint
      * @return ServerEndpointExporter 对象
@@ -43,6 +47,7 @@ public class WebSocketConfig {
 
     @Bean
     public WebSocketClient webSocketClient() {
+
         try {
             WebSocketClient webSocketClient = new WebSocketClient(new URI(uri),new Draft_6455()) {
                 @Override
@@ -53,6 +58,7 @@ public class WebSocketConfig {
                 @Override
                 public void onMessage(String message) {
                     try {
+                        wsNodeService.dealWithWebsocketMessage(message);
                         wsNodeService.dealWithWebsocketMessage(message);
                     } catch (IOException | EncodeException e) {
                         e.printStackTrace();
@@ -75,6 +81,11 @@ public class WebSocketConfig {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Scheduled(cron = "0/30 * * * * ?")
+    public void reconnectWebSocket(){
+        webSocketClient.reconnect();
     }
 
 

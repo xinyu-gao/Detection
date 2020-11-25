@@ -74,14 +74,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 // 关闭 csrf 防御机制
                 .csrf().disable()
-                .authorizeRequests()
 
                 // 允许对于无授权访问的 URL
+                .authorizeRequests()
                 .antMatchers("/login").permitAll()
 
-                // 测试时全部运行访问
-//                .antMatchers("/**","/node/save")
-//                .permitAll()
 
                 // 添加 JWT 登录拦截器、鉴权拦截器
                 .and()

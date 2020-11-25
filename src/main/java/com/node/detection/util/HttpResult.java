@@ -22,8 +22,6 @@ public class HttpResult<T> {
      */
     private T data;
 
-
-
     /**
      * 成功返回结果
      *

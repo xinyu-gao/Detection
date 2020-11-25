@@ -26,7 +26,6 @@ public class Node implements Serializable {
     /**
      * IMSI号
      */
-    @Id
     @Field(name = "imsi")
     private String IMSI;
 
