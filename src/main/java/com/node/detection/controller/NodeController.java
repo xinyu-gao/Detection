@@ -1,7 +1,6 @@
 package com.node.detection.controller;
 
 import com.node.detection.dao.WsNodeRepository;
-import com.node.detection.entity.mongo.Node;
 import com.node.detection.entity.ws.WsNode;
 import com.node.detection.service.NodeCleanDataService;
 import com.node.detection.service.NodeService;
