@@ -2,6 +2,7 @@ package com.node.detection.controller;
 
 import com.node.detection.dao.WsNodeRepository;
 import com.node.detection.entity.ws.WsNode;
+import com.node.detection.service.IMSIService;
 import com.node.detection.service.NodeCleanDataService;
 import com.node.detection.service.NodeService;
 import com.node.detection.util.HttpResult;
@@ -21,19 +22,11 @@ public class NodeController {
     @Autowired
     private NodeService nodeService;
 
-
     @Autowired
     private NodeCleanDataService nodeCleanDataService;
 
     @Autowired
     private WsNodeRepository wsNodeRepository;
-
-//    @ApiOperation("查询node信息")
-//    @PostMapping("/find")
-//    public HttpResult findNode(@RequestBody Node node){
-//        return HttpResult.success(nodeService.findByType(node.getIMSI(),0,2));
-//    }
-
 
     @ApiOperation("新增node信息")
     @PostMapping("/save")

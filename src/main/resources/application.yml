@@ -5,6 +5,7 @@ spring:
   datasource:
     # 使用阿里的 Druid 连接池
     type: com.alibaba.druid.pool.DruidDataSource
+    # mysql 驱动
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 数据库的url、登录名、密码和数据库名
     url: jdbc:mysql://175.24.147.229:3306/detection?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
@@ -43,8 +44,6 @@ spring:
         url-pattern: "/druid/*"
         # IP 白名单(没有配置或者为空，则允许所有访问)
         allow: 127.0.0.1,192.168.163.1
-        # IP 黑名单 (存在共同时，deny 优先于 allow)
-        deny: 192.168.1.73
         #  禁用 HTML 页面上的“Reset All”功能
         reset-enable: false
         # 登录名
@@ -58,9 +57,6 @@ spring:
     hibernate:
       ddl-auto: update
 
-
-
-
   data:
     mongodb:
       host: 175.24.147.229
@@ -69,7 +65,7 @@ spring:
       username: dev
       password: yu1119dev
 
-
+# 日志文件位置
 logging:
   file:
     path: "./logs/"
@@ -77,7 +73,7 @@ logging:
 # 验证码相关信息
 kaptcha:
   border:
-    have: "no"  # border
+    have: "no"
     color: white
 
   producer:
