@@ -9,4 +9,5 @@ public interface NodeCleanDataService {
      * @return Node 节点清理数据
      */
     NodeCleanData getNodeCleanDataByIMSI(String ISMI);
+
 }

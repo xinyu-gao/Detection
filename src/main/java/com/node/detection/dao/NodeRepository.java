@@ -1,8 +1,11 @@
 package com.node.detection.dao;
 
 import com.node.detection.entity.mongo.Node;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
+
 
 /**
  * @author chengzi
@@ -11,10 +14,10 @@ import org.springframework.stereotype.Repository;
 public interface NodeRepository extends MongoRepository<Node, String> {
     /**
      * 通过 IMSI 查找节点
-     * @param name 节点名
+     * @param imsi imsi
      * @return 节点信息
      */
-    Node findNodeByIMSI(String name);
+    Page<Node> findByIMSIOrderByCurrentTimeDesc(String imsi , Pageable pageable);
 
 
     /**

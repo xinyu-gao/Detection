@@ -62,12 +62,12 @@ public class WebSocketConfig {
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
-                    log.info("[websocket] 退出连接, {}", uri);
+//                    log.info("[websocket] 退出连接, {}", uri);
                 }
 
                 @Override
                 public void onError(Exception ex) {
-                    log.info("[websocket] 连接错误 = {}",ex.getMessage());
+//                    log.info("[websocket] 连接错误 = {}",ex.getMessage());
                 }
             };
             webSocketClient.connect();

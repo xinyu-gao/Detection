@@ -111,7 +111,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         // kaptcha 资源放行
                         "/kaptcha",  "/checkVerifyCode",
                         // 注册 资源放行
-                        "/user/save"
+                        "/user/save",
+                        "/ws"
                 );
     }
 
