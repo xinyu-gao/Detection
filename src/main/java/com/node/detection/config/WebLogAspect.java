@@ -3,7 +3,7 @@ package com.node.detection.config;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONUtil;
-import com.node.detection.entity.WebLog;
+import com.node.detection.entity.util.WebLog;
 import io.swagger.annotations.ApiOperation;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;

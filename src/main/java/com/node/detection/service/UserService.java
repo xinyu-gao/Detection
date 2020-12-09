@@ -1,7 +1,8 @@
 package com.node.detection.service;
 
-import com.node.detection.entity.mysql.Role;
-import com.node.detection.entity.mysql.SysUser;
+import com.node.detection.entity.mongo.SysUser;
+import com.node.detection.entity.util.MyPageRequest;
+import com.node.detection.entity.util.PageResult;
 
 import java.util.List;
 
@@ -24,9 +25,16 @@ public interface UserService {
     void saveUser(SysUser sysUser) throws Exception;
 
     /**
-     * 通过用户 id 查询该用户的角色
-     * @param userId 用户 id
+     * 通过 用户名 查询该用户的角色
+     * @param username 用户名
      * @return 角色列表
      */
-    List<String> findRolesByUserId(Long userId);
+    List<String> findRolesByUserName(String username);
+
+    /**
+     * 查询所有用户的角色
+     * @param myPageRequest 分页
+     * @return 分页查询数据
+     */
+    PageResult findAllUsers(MyPageRequest myPageRequest);
 }

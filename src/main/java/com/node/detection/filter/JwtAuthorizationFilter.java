@@ -2,7 +2,7 @@ package com.node.detection.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.node.detection.exception.SendException;
-import com.node.detection.util.HttpResult;
+import com.node.detection.entity.util.HttpResult;
 import com.node.detection.util.JwtTokenUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

@@ -1,77 +1,79 @@
-package com.node.detection.entity.mysql;
+package com.node.detection.entity.mongo;
 
 
-import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author xinyu
  */
-@Entity
-@Table(name = "sys_user")
 @Data
-@Component
+@Document
 @Slf4j
 public class SysUser implements Serializable, UserDetails {
 
     /**
-     * 主键，自增
-     */
-    @Id
-    @GeneratedValue()
-    private Long id;
-    /**
      * 用户名
      */
-//    @NotNull(message = "username is null")
+    @Field(name = "username")
     private String username;
 
     /**
      * 用户密码
      */
-//    @NotNull(message = "password is null")
+    @Field(name = "password")
     private String password;
 
-
+    /**
+     * 创建时间
+     */
+    @Field(name = "create_time")
+    private String creatTime;
 
     /**
-     * 用户的手机号码
+     * 创建者
      */
-    private String phoneNumber;
+    @Field(name = "create_user")
+    private String createUser;
 
     /**
-     * 用户的电子邮件地址
+     * 角色
      */
-    @Column(name = "email")
-    private String email;
+    @Field(name = "roles")
+    private List<String> roles;
+
     /**
      * 账户是否没有过期
      */
-    @Column(name = "account_non_expired")
+    @Field(name = "account_non_expired")
     private boolean accountNonExpired;
+
     /**
      * 账户是否没有被锁定
      */
-    @Column(name = "account_non_locked")
+    @Field(name = "account_non_locked")
     private boolean accountNonLocked;
+
     /**
      * 密码是否没有过期
      */
-    @Column(name = "credentials_non_expired")
+    @Field(name = "credentials_non_expired")
     private boolean credentialsNonExpired;
+
     /**
      * 账户是否可用
      */
     private boolean enabled;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

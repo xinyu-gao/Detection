@@ -1,7 +1,7 @@
 package com.node.detection.config.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.node.detection.util.HttpResult;
+import com.node.detection.entity.util.HttpResult;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

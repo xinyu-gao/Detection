@@ -1,7 +1,7 @@
 package com.node.detection.config.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.node.detection.util.HttpResult;
+import com.node.detection.entity.util.HttpResult;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.node.detection.entity;
+package com.node.detection.entity.util;
 
 import lombok.Data;
 

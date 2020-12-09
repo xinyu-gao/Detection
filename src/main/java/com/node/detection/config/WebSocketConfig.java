@@ -1,8 +1,5 @@
 package com.node.detection.config;
 
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
-import com.node.detection.entity.ws.WsNode;
 import com.node.detection.service.WsNodeService;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.client.WebSocketClient;
@@ -13,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 import javax.websocket.EncodeException;
@@ -58,7 +54,6 @@ public class WebSocketConfig {
                 @Override
                 public void onMessage(String message) {
                     try {
-                        wsNodeService.dealWithWebsocketMessage(message);
                         wsNodeService.dealWithWebsocketMessage(message);
                     } catch (IOException | EncodeException e) {
                         e.printStackTrace();

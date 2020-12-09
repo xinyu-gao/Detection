@@ -1,8 +1,9 @@
 package com.node.detection.controller;
 
-import com.node.detection.entity.mysql.SysUser;
+import com.node.detection.entity.mongo.SysUser;
+import com.node.detection.entity.util.MyPageRequest;
 import com.node.detection.service.UserService;
-import com.node.detection.util.HttpResult;
+import com.node.detection.entity.util.HttpResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -34,11 +35,14 @@ public class UserController {
         return HttpResult.success(result);
     }
 
+    @PostMapping("/findAll")
+    public HttpResult findAllUsers(@RequestBody MyPageRequest myPageRequest) {
+        return HttpResult.success(userService.findAllUsers(myPageRequest));
+    }
+
     @PostMapping("/find_role")
     public HttpResult findRole(@RequestBody SysUser sysUser) {
-        log.info(sysUser.getUsername());
-        Long id = userService.findByUsername(sysUser.getUsername()).getId();
-        List<String> result = userService.findRolesByUserId(id);
+        List<String> result = userService.findRolesByUserName(sysUser.getUsername());
         return HttpResult.success(result);
     }
 

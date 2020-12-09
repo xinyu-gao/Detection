@@ -1,16 +1,16 @@
 package com.node.detection.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.node.detection.dao.RoleRepository;
+import cn.hutool.core.date.DateUtil;
 import com.node.detection.dao.UserRepository;
-import com.node.detection.dao.UserRoleRepository;
-import com.node.detection.entity.mysql.Role;
-import com.node.detection.entity.mysql.SysUser;
-import com.node.detection.entity.mysql.UserRoles;
+import com.node.detection.entity.mongo.SysUser;
+import com.node.detection.entity.util.MyPageRequest;
 import com.node.detection.service.UserService;
-import com.node.detection.util.EncoderUtil;
+import com.node.detection.entity.util.PageResult;
+import com.node.detection.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +22,9 @@ import java.util.*;
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private UserRoleRepository userRoleRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
 
     @Override
     public SysUser findByUsername(String username) {
@@ -41,26 +35,24 @@ public class UserServiceImpl implements UserService {
     public void saveUser(SysUser sysUser) throws Exception {
         SysUser user = findByUsername(sysUser.getUsername());
         if(user == null){
-            //加密密码
+            sysUser.setCreatTime(DateUtil.today());
+            // 加密
             String passwordAfterEncode = new BCryptPasswordEncoder().encode(sysUser.getPassword());
             sysUser.setPassword(passwordAfterEncode);
-            userRepository.saveAndFlush(sysUser);
+            userRepository.save(sysUser);
         }else {
             throw new Exception("username is already exist");
         }
     }
 
     @Override
-    public List<String> findRolesByUserId(Long userId) {
-        List<UserRoles> userRoles = userRoleRepository.findByUserId(userId);
+    public List<String> findRolesByUserName(String username) {
+        return  userRepository.findByUsername(username).getRoles();
+    }
 
-        List<String> roles = new ArrayList<>();
-        for(UserRoles userRole : userRoles){
-            Optional<Role> role = roleRepository.findById(userRole.getRoleId());
-            // 查询到了角色名后添加到数组中
-            roles.add(role.map(Role::getName).orElse(null));
-        }
-        log.info("roles:" + roles);
-        return roles;
+    @Override
+    public PageResult findAllUsers(MyPageRequest myPageRequest) {
+        Page<SysUser> sysUsers = userRepository.findAll(PageRequest.of(myPageRequest.getPage(), myPageRequest.getSize()));
+        return PageUtil.setResult(sysUsers, myPageRequest.getPage());
     }
 }

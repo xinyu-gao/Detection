@@ -1,15 +1,17 @@
 package com.node.detection.controller;
 
-import com.node.detection.dao.WsNodeRepository;
-import com.node.detection.entity.ws.WsNode;
-import com.node.detection.service.IMSIService;
+import com.node.detection.entity.mongo.LastNode;
+import com.node.detection.service.LastNodeService;
 import com.node.detection.service.NodeCleanDataService;
-import com.node.detection.service.NodeService;
-import com.node.detection.util.HttpResult;
+import com.node.detection.entity.util.HttpResult;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author xinyu
@@ -20,23 +22,31 @@ import org.springframework.web.bind.annotation.*;
 public class NodeController {
 
     @Autowired
-    private NodeService nodeService;
-
-    @Autowired
     private NodeCleanDataService nodeCleanDataService;
 
     @Autowired
-    private WsNodeRepository wsNodeRepository;
-
-    @ApiOperation("新增node信息")
-    @PostMapping("/save")
-    public HttpResult insertNode(@RequestBody WsNode node) {
-        return HttpResult.success(wsNodeRepository.save(node));
-    }
+    private LastNodeService lastNodeService;
 
     @ApiOperation("查询node清理数据")
     @GetMapping("/get_clean_data")
     public HttpResult getNodeCleanData(@RequestParam("imsi") String IMSI) {
         return HttpResult.success(nodeCleanDataService.getNodeCleanDataByIMSI(IMSI));
+    }
+
+    @ApiOperation("查询所有node最新数据")
+    @GetMapping("/get_last_data")
+    public HttpResult getNodeData() {
+        List<LastNode> lastNodeList = lastNodeService.getAllLastNode();
+        Map<String, Object> map = new HashMap<>();
+        map.put("nodeNums", lastNodeList.size());
+        int nodeConnectCount = 0;
+        for (LastNode lastNode : lastNodeList) {
+            if(lastNode.getConnectStatus().equals("connecting")) {
+                nodeConnectCount++;
+            }
+        }
+        map.put("nodeConnectRate", nodeConnectCount);
+        map.put("nodeData", lastNodeList);
+        return HttpResult.success(map);
     }
 }

@@ -1,4 +1,4 @@
-package com.node.detection.util;
+package com.node.detection.entity.util;
 
 /**
  * 枚举了一些常用API操作码

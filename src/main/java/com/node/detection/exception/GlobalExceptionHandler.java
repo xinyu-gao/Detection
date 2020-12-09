@@ -1,6 +1,6 @@
 package com.node.detection.exception;
 
-import com.node.detection.util.HttpResult;
+import com.node.detection.entity.util.HttpResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

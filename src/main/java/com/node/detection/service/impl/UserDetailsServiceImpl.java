@@ -1,7 +1,7 @@
 package com.node.detection.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.node.detection.entity.mysql.SysUser;
+import com.node.detection.entity.mongo.SysUser;
 import com.node.detection.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         String password = users.getPassword();
         log.info("password"+password);
-        List<String> userRoles = userService.findRolesByUserId(users.getId());
+        List<String> userRoles = userService.findRolesByUserName(username);
         List<GrantedAuthority> authorities = new ArrayList<>();
         for(String role : userRoles) authorities.add(new SimpleGrantedAuthority(role));
 

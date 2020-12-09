@@ -1,7 +1,7 @@
 package com.node.detection.controller;
 
 import com.node.detection.service.CommonService;
-import com.node.detection.util.HttpResult;
+import com.node.detection.entity.util.HttpResult;
 import com.node.detection.util.KaptchaUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

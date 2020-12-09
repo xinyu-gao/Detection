@@ -2,14 +2,13 @@ package com.node.detection.service.impl;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.node.detection.entity.mongo.IMSIInfo;
+import com.node.detection.entity.mongo.LastNode;
 import com.node.detection.entity.mongo.Node;
 import com.node.detection.entity.ws.WsNode;
-import com.node.detection.service.IMSIService;
+import com.node.detection.service.LastNodeService;
 import com.node.detection.service.NodeService;
 import com.node.detection.service.WebSocketService;
 import com.node.detection.service.WsNodeService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,18 +23,19 @@ public class WsNodeServiceImpl implements WsNodeService {
     private NodeService nodeService;
 
     @Autowired
-    private WebSocketService webSocketService;
+    private LastNodeService lastNodeService;
 
     @Autowired
-    private IMSIService imsiService;
+    private WebSocketService webSocketService;
+
 
     public void dealWithWebsocketMessage(String message) throws IOException, EncodeException {
         // 转为 Java 对象
         WsNode wsNode = stringToWsNodeBean(message);
         // WsNode 转为 Node 对象
         Node node = wsNodeDataToNode(wsNode.getData());
-        // imsi 存储到 imsi 集合中，保存到 mongodb 中
-        imsiService.insertIMSI(new IMSIInfo(node.getIMSI(), node.getCurrentTime()));
+        // 更新最新的 Node 信息到 MongoDB 数据库
+        lastNodeService.saveLastNode(nodeToLastNode(node));
         // 存储 Node 信息到 MongoDB 数据库
         nodeService.saveNode(node);
         // 将 Node 信息传输到 Web 端
@@ -53,6 +53,10 @@ public class WsNodeServiceImpl implements WsNodeService {
         JSONObject jsonObject = JSONUtil.parseObj(str);
         // json 转为 java 对象
         return JSONUtil.toBean(jsonObject, WsNode.class);
+    }
+
+    private LastNode nodeToLastNode(Node node) {
+        return JSONUtil.toBean(JSONUtil.parseObj(node), LastNode.class);
     }
 
     /**
