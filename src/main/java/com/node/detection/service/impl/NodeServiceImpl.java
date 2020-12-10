@@ -1,5 +1,6 @@
 package com.node.detection.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.node.detection.dao.NodeRepository;
 import com.node.detection.entity.mongo.Node;
 import com.node.detection.entity.util.LineData;
@@ -38,7 +39,7 @@ public class NodeServiceImpl implements NodeService {
         List<Integer> lineSignalPowerList = new LinkedList<>();
         List<Integer> lineBrightList = new LinkedList<>();
         for(Node node: nodeList.getContent()){
-            timeList.add(0, node.getCurrentTime());
+            timeList.add(0, node.getCurrentTime().substring(11, 16));
             lineMcuTempList.add(0, node.getMcuTemp());
             lineSignalPowerList.add(0, node.getSignalPower());
             lineBrightList.add(0, node.getBright());

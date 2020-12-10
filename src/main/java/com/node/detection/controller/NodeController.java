@@ -2,6 +2,7 @@ package com.node.detection.controller;
 
 import cn.hutool.core.util.NumberUtil;
 import com.node.detection.entity.mongo.LastNode;
+import com.node.detection.entity.mongo.Node;
 import com.node.detection.entity.util.MyPageRequest;
 import com.node.detection.entity.util.PageResult;
 import com.node.detection.service.LastNodeService;
@@ -45,6 +46,16 @@ public class NodeController {
     @GetMapping("/get_line_data")
     public HttpResult getLineDataForCurrentNode(@RequestParam("imsi") String IMSI) {
         return HttpResult.success(nodeService.getLineDataByIMSI(IMSI));
+    }
+
+//    @ApiOperation("查询所有node最新数据")
+    @PostMapping("/set_last_data")
+    public HttpResult setNodeData(@RequestBody LastNode lastNode){
+        return HttpResult.success(lastNodeService.saveLastNode(lastNode));
+    }
+    @PostMapping("/set_node_data")
+    public HttpResult setNodeData(@RequestBody Node node){
+        return HttpResult.success(nodeService.saveNode(node));
     }
 
     @ApiOperation("查询所有node最新数据")
