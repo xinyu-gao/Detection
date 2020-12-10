@@ -1,9 +1,11 @@
 package com.node.detection.service;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -18,7 +20,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * 注解的值用户客户端连接访问的 URL 地址
  */
 @Slf4j
-@Component
+@Service
+@Data
 @ServerEndpoint("/ws")
 public class WebSocketService {
 
@@ -82,8 +85,8 @@ public class WebSocketService {
      * @throws IOException     发送失败
      * @throws EncodeException Object 转 JSON 失败
      */
-    public void sendMessage(Object message) throws IOException, EncodeException {
-        this.session.getBasicRemote().sendObject(message);
+    public void sendMessage(String message) throws IOException, EncodeException {
+        this.session.getBasicRemote().sendText(message);
     }
 
     /**
@@ -93,28 +96,11 @@ public class WebSocketService {
      * @throws IOException     发送失败
      * @throws EncodeException Object 转 JSON 失败
      */
-    public void sendInfo(Object message) throws IOException, EncodeException {
+    public void sendInfo(String message) throws IOException, EncodeException {
         log.info("websocket群发消息，消息：" + message);
         for (WebSocketService item : webSocketSet) {
             item.sendMessage(message);
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        WebSocketService that = (WebSocketService) o;
-        return Objects.equals(webSocketSet, that.webSocketSet) &&
-                Objects.equals(session, that.session);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(webSocketSet, session);
-    }
 }

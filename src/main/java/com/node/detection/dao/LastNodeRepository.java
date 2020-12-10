@@ -1,6 +1,8 @@
 package com.node.detection.dao;
 
 import com.node.detection.entity.mongo.LastNode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,8 +22,7 @@ public interface LastNodeRepository extends MongoRepository<LastNode, String> {
 
     LastNode save(LastNode node);
 
-    @Override
-    List<LastNode> findAll();
+    Page<LastNode> findAll(Pageable pageable);
 
     LastNode deleteLastNodeByIMSI(String imsi);
 }

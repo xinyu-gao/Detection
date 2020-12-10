@@ -39,7 +39,7 @@ public class WsNodeServiceImpl implements WsNodeService {
         // 存储 Node 信息到 MongoDB 数据库
         nodeService.saveNode(node);
         // 将 Node 信息传输到 Web 端
-        webSocketService.sendInfo(node);
+        webSocketService.sendInfo(node.toString());
     }
 
     /**
