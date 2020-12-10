@@ -17,8 +17,14 @@ public class IMSIInfo {
      */
     private String lastSendTime;
 
-    public IMSIInfo(String imsi, String currentTime) {
+    /**
+     * 该 imsi 上次发送数据的时间到目前时间的间隔
+     */
+    private String lastToNowTime;
+
+     public IMSIInfo(String imsi, String currentTime, String lastToNowTime) {
         this.imsi = imsi;
         this.lastSendTime = currentTime;
+        this.lastToNowTime = lastToNowTime;
     }
 }
