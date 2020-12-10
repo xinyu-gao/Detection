@@ -1,5 +1,8 @@
 package com.node.detection.controller;
 
+import cn.hutool.core.date.BetweenFormatter;
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import com.node.detection.entity.util.IMSIInfo;
 import com.node.detection.entity.util.MyPageRequest;
 import com.node.detection.service.LastNodeService;
@@ -21,8 +24,18 @@ public class IMSIController {
     @ApiOperation(value = "请求存活的 imsi 列表")
     @PostMapping("/get_set")
     public HttpResult getIMSISet(@RequestBody MyPageRequest myPageRequest) {
-        List<IMSIInfo> iMSIInfoList = lastNodeService.getAllLastNode(myPageRequest).getList().stream()
-                .map(lastNode -> new IMSIInfo(lastNode.getIMSI(), lastNode.getCurrentTime()))
+        List<IMSIInfo> iMSIInfoList = lastNodeService.getAllLastNode(myPageRequest)
+                .getList()
+                .stream()
+                .map(lastNode -> new IMSIInfo(
+                        lastNode.getIMSI(),
+                        lastNode.getCurrentTime(),
+                        DateUtil.formatBetween(
+                                DateUtil.between(
+                                        DateUtil.parse(DateUtil.now()),
+                                        DateUtil.parse(lastNode.getCurrentTime()),
+                                        DateUnit.DAY),
+                                BetweenFormatter.Level.MINUTE)))
                 .collect(Collectors.toList());
         return HttpResult.success(iMSIInfoList);
     }
