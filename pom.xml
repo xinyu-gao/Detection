@@ -179,8 +179,7 @@
                 <configuration>
                     <!-- 镜像名称-->
                     <imageName>detection/${project.artifactId}:${project.version}</imageName>
-<!--                    <user>maodetuanzi</user>-->
-                    <dockerHost>http://127.0.0.1:2375</dockerHost>
+                    <dockerHost>http://175.24.147.229:2375</dockerHost>
                     <baseImage>openjdk:8-alpine</baseImage>
                     <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
 <!--                    &lt;!&ndash; dockerfile文件路径&ndash;&gt;-->
