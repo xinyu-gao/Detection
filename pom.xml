@@ -179,11 +179,11 @@
                 <configuration>
                     <!-- 镜像名称-->
                     <imageName>detection/${project.artifactId}:${project.version}</imageName>
-<!--                    <dockerHost>http://175.24.147.229:5000</dockerHost>-->
+                    <dockerHost>http://175.24.147.229:5000</dockerHost>
                     <baseImage>openjdk:8-alpine</baseImage>
                     <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
-                    <!-- dockerfile文件路径-->
-<!--                    <dockerDirectory>src/main/docker</dockerDirectory>-->
+<!--                    &lt;!&ndash; dockerfile文件路径&ndash;&gt;-->
+<!--&lt;!&ndash;                    <dockerDirectory>src/main/docker</dockerDirectory>&ndash;&gt;-->
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
