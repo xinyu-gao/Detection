@@ -183,7 +183,7 @@
                     <baseImage>openjdk:8-alpine</baseImage>
                     <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
                     <!-- dockerfile文件路径-->
-                    <dockerDirectory>src/main/docker</dockerDirectory>
+<!--                    <dockerDirectory>src/main/docker</dockerDirectory>-->
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
