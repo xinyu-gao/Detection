@@ -166,7 +166,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>1.0.0</version>
+                <version>1.2.0</version>
                 <executions>
                     <execution>
                         <id>build-image</id>
@@ -179,7 +179,7 @@
                 <configuration>
                     <!-- 镜像名称-->
                     <imageName>detection/${project.artifactId}:${project.version}</imageName>
-                    <dockerHost>http://175.24.147.229:5000</dockerHost>
+                    <dockerHost>http://175.24.147.229:2375</dockerHost>
                     <baseImage>openjdk:8-alpine</baseImage>
                     <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
                     <!-- dockerfile文件路径-->
