@@ -180,7 +180,7 @@
                     <imageName>${project.artifactId}:${project.version}</imageName>
                     <dockerHost>http://175.24.147.229:2375</dockerHost>
                     <baseImage>openjdk:8-alpine</baseImage>
-                    <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+                    <entryPoint>["java", "-jar", "${project.build.finalName}.jar"]</entryPoint>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
