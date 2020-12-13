@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.node</groupId>
     <artifactId>detection</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
     <name>detection</name>
     <description>Demo project for Spring Boot</description>
 
@@ -59,11 +59,11 @@
 
 
         <!-- mysql -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.15</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>mysql</groupId>-->
+<!--            <artifactId>mysql-connector-java</artifactId>-->
+<!--            <version>8.0.15</version>-->
+<!--        </dependency>-->
 
         <!-- mongodb -->
         <dependency>
