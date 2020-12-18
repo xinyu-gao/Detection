@@ -175,7 +175,7 @@
                 </executions>
                 <configuration>
                     <imageName>${project.artifactId}:${project.version}</imageName>
-                    <dockerHost>http://175.24.147.229:2375</dockerHost>
+                    <dockerHost>http://175.24.147.229:2385</dockerHost>
                     <baseImage>openjdk:8-alpine</baseImage>
                     <entryPoint>["java", "-jar", "${project.build.finalName}.jar"]</entryPoint>
                     <resources>

@@ -19,7 +19,7 @@ public class PageUtil {
      *     "currentPage": 1
      * }
      *
-     * @param page 原来的结果
+     * @param page 原来的分页结果
      * @param <T>  泛型类
      * @return 构建后的结果
      */
