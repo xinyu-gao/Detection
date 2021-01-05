@@ -26,7 +26,7 @@ public class IMSIController {
     public HttpResult getIMSISet(@RequestBody MyPageRequest myPageRequest) {
         List<IMSIInfo> iMSIInfoList = lastNodeService.getAllLastNode(myPageRequest)
                 .getList()
-                .stream()
+                .parallelStream()
                 .map(lastNode -> new IMSIInfo(
                         lastNode.getIMSI(),
                         lastNode.getCurrentTime(),

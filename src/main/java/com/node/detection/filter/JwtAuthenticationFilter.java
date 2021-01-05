@@ -68,7 +68,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setContentType("application/json; charset=utf-8");
         Map<String,String> map = new HashMap<>(1);
         map.put("token",token);
-        // 将反馈塞到HttpServletResponse中返回给前台
         response.getWriter().write(JSON.toJSONString(HttpResult.success(map)));
     }
 
