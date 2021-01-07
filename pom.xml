@@ -163,7 +163,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>1.1.0</version>
+                <version>1.2.2</version>
                 <executions>
                     <execution>
                         <id>build-image</id>
@@ -175,10 +175,9 @@
                 </executions>
                 <configuration>
                     <imageName>${project.artifactId}:${project.version}</imageName>
-                    <dockerHost>https://175.24.147.229:2375</dockerHost>
-                    <baseImage>java:8</baseImage>
+                    <dockerHost>http://175.24.147.229:2379</dockerHost>
+                    <baseImage>openjdk:11.0</baseImage>
                     <entryPoint>["java", "-jar", "/${project.build.finalName}.jar", "--spring.profiles.active=prod"]</entryPoint>
-                    <dockerCertPath>D:\folder\docker-ca</dockerCertPath>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
@@ -188,34 +187,6 @@
                     </resources>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>com.google.cloud.tools</groupId>-->
-<!--                <artifactId>jib-maven-plugin</artifactId>-->
-<!--                <version>1.7.0</version>-->
-<!--                <configuration>-->
-<!--                    <from>-->
-<!--                        <image>java:8</image>-->
-<!--                    </from>-->
-<!--                    <to>-->
-<!--                        <image>maodetuanzi/detection</image>-->
-<!--                        <tags>-->
-<!--                            <tag>${project.version}</tag>-->
-<!--                        </tags>-->
-<!--                        <auth>-->
-<!--                            <username>maodetuanzi</username>-->
-<!--                            <password>Ayu1119..</password>-->
-<!--                        </auth>-->
-<!--                    </to>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>build</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 
