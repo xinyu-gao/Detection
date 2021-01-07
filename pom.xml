@@ -177,7 +177,7 @@
                     <imageName>${project.artifactId}:${project.version}</imageName>
                     <dockerHost>http://175.24.147.229:2375</dockerHost>
                     <baseImage>java:8</baseImage>
-                    <entryPoint>["java", "-jar","/${project.build.finalName}.jar"]</entryPoint>
+                    <entryPoint>["java", "-jar", "/${project.build.finalName}.jar", "--spring.profiles.active=prod"]</entryPoint>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
