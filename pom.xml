@@ -175,9 +175,10 @@
                 </executions>
                 <configuration>
                     <imageName>${project.artifactId}:${project.version}</imageName>
-                    <dockerHost>http://175.24.147.229:2375</dockerHost>
+                    <dockerHost>https://175.24.147.229:2375</dockerHost>
                     <baseImage>java:8</baseImage>
                     <entryPoint>["java", "-jar", "/${project.build.finalName}.jar", "--spring.profiles.active=prod"]</entryPoint>
+                    <dockerCertPath>D:\folder\docker-ca</dockerCertPath>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
