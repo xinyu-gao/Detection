@@ -10,7 +10,9 @@ import java.util.List;
 
 public interface LastNodeService {
 
-    PageResult<LastNode> getAllLastNode(MyPageRequest myPageRequest);
+    PageResult<LastNode> getLastNode(int page, int size);
+
+    List<LastNode> getAllLastNode();
 
     LastNode deleteIMSIFromLastNodeList(String imsi);
 

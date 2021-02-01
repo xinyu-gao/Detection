@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * 存储所有接收过的数据，用于历史数据查询
+ * 存储所有接收过的数据，用于历史数据查询等
  */
 @Document
 @Data
@@ -65,11 +65,6 @@ public class Node implements Serializable {
     @Field(name = "mcu_temp")
     private int mcuTemp;
 
-    /**
-     * 信号强度
-     */
-    @Field(name = "signal_power")
-    private int signalPower;
 
     /**
      * 光线强度
@@ -77,11 +72,25 @@ public class Node implements Serializable {
     @Field(name = "bright")
     private int bright;
 
+
     /**
-     * TSI次数
+     * 距离，例如 0.3 表示 30 %
      */
-    @Field(name = "touch_num")
-    private int touchNum;
+    @Field(name = "distance")
+    private double distance;
+
+    /**
+     * 烟雾
+     */
+    @Field(name = "smog")
+    private int smog;
+
+    /**
+     * 环境温度
+     */
+    @Field(name = "env_temp")
+    private int envTemp;
+
     /**
      * LBS定位信息
      */

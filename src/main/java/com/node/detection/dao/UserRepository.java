@@ -22,4 +22,7 @@ public interface UserRepository extends MongoRepository<SysUser, Long> {
     Page<SysUser> findAll(Pageable pageable);
 
     SysUser save(SysUser sysUser);
+
+    void deleteByUsername(String username);
+
 }

@@ -13,16 +13,23 @@ public class LineData {
 
     private List<Integer> lineMcuTempList;
 
-    private List<Integer> lineSignalPowerList;
+    private List<Integer> lineEnvTempList;
 
     private List<Integer> lineBrightList;
 
+    private List<Integer> lineSmogList;
 
-    public LineData(String imsi, List<String> lineTimeList, List<Integer> lineMcuTempList, List<Integer> lineSignalPowerList ,List<Integer> lineBrightList) {
+    public LineData(String imsi,
+                    List<String> lineTimeList,
+                    List<Integer> lineMcuTempList,
+                    List<Integer> lineEnvTempList,
+                    List<Integer> lineBrightList,
+                    List<Integer> lineSmogList) {
         this.imsi = imsi;
         this.lineTimeList = lineTimeList;
         this.lineMcuTempList = lineMcuTempList;
-        this.lineSignalPowerList = lineSignalPowerList;
+        this.lineEnvTempList = lineEnvTempList;
         this.lineBrightList = lineBrightList;
+        this.lineSmogList = lineSmogList;
     }
 }

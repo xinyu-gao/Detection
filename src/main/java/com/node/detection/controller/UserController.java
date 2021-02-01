@@ -1,5 +1,6 @@
 package com.node.detection.controller;
 
+import com.node.detection.dao.UserRepository;
 import com.node.detection.entity.mongo.SysUser;
 import com.node.detection.entity.util.MyPageRequest;
 import com.node.detection.service.UserService;
@@ -23,9 +24,20 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping("/save")
     public HttpResult saveUser(@Validated @RequestBody SysUser sysUser) throws Exception {
         userService.saveUser(sysUser);
+        return HttpResult.success(true);
+    }
+
+    @PostMapping("/password")
+    public HttpResult updatePassword(@Validated @RequestBody SysUser sysUser) throws Exception {
+        SysUser user = userService.findByUsername(sysUser.getUsername());
+        user.setPassword(sysUser.getPassword());
+        userService.saveUser(user);
         return HttpResult.success(true);
     }
 
@@ -35,6 +47,11 @@ public class UserController {
         return HttpResult.success(result);
     }
 
+    @DeleteMapping()
+    public HttpResult deleteUser(@RequestBody SysUser sysUser) {
+        userRepository.deleteByUsername(sysUser.getUsername());
+        return HttpResult.success("true");
+    }
     @PostMapping("/findAll")
     public HttpResult findAllUsers(@RequestBody MyPageRequest myPageRequest) {
         return HttpResult.success(userService.findAllUsers(myPageRequest));
@@ -46,10 +63,4 @@ public class UserController {
         return HttpResult.success(result);
     }
 
-    @PostMapping("/logins")
-    @ResponseBody
-    public SysUser getKaptchaImages(SysUser sysUser) throws Exception {
-        return sysUser;
-
-    }
 }

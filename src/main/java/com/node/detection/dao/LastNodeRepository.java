@@ -24,5 +24,7 @@ public interface LastNodeRepository extends MongoRepository<LastNode, String> {
 
     Page<LastNode> findAll(Pageable pageable);
 
+    List<LastNode> findAll();
+
     LastNode deleteLastNodeByIMSI(String imsi);
 }

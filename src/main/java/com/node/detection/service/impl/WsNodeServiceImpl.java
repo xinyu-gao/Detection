@@ -1,5 +1,6 @@
 package com.node.detection.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.node.detection.entity.mongo.LastNode;
@@ -9,6 +10,8 @@ import com.node.detection.service.LastNodeService;
 import com.node.detection.service.NodeService;
 import com.node.detection.service.WebSocketService;
 import com.node.detection.service.WsNodeService;
+import lombok.extern.slf4j.Slf4j;
+import org.java_websocket.client.WebSocketClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
+@Slf4j
 public class WsNodeServiceImpl implements WsNodeService {
 
     @Autowired
@@ -28,35 +32,42 @@ public class WsNodeServiceImpl implements WsNodeService {
     @Autowired
     private WebSocketService webSocketService;
 
+    @Autowired
+    private WebSocketClient webSocketClient;
+
 
     public void dealWithWebsocketMessage(String message) throws IOException, EncodeException {
         // 转为 Java 对象
         WsNode wsNode = stringToWsNodeBean(message);
-        // WsNode 转为 Node 对象
-        Node node = wsNodeDataToNode(wsNode.getData());
-        // 更新最新的 Node 信息到 MongoDB 数据库
-        lastNodeService.saveLastNode(nodeToLastNode(node));
-        // 存储 Node 信息到 MongoDB 数据库
-        nodeService.saveNode(node);
-        // 将 Node 信息传输到 Web 端
-        webSocketService.sendInfo(node.toString());
+        if ("recv".equals(wsNode.getCommand())){
+            wsNode.setCommand("ask");
+            webSocketClient.send(wsNode.toString());
+        }
+        if ("reAsk".equals(wsNode.getCommand())) {
+            Node node = wsNodeDataToNode(wsNode.getData());
+            lastNodeService.saveLastNode(nodeToLastNode(node));
+            nodeService.saveNode(node);
+            webSocketService.sendInfo(node.toString());
+        }
     }
 
     /**
      * WebSocket 接收的是 String 类型 ，需要转为我们需要的 Java 对象
      *
-     * @param str String 类型的 JSON
+     * @param str String 类型的 JSON 数据
      * @return WsNode 对象
      */
     private WsNode stringToWsNodeBean(String str) {
-        // 解析为 json
-        JSONObject jsonObject = JSONUtil.parseObj(str);
-        // json 转为 java 对象
-        return JSONUtil.toBean(jsonObject, WsNode.class);
+        // 先解析为 json，再转为 Java 对象
+        return JSONUtil.toBean(JSONUtil.parseObj(str), WsNode.class);
     }
 
     private LastNode nodeToLastNode(Node node) {
-        return JSONUtil.toBean(JSONUtil.parseObj(node), LastNode.class);
+        LastNode lastNode = JSONUtil.toBean(JSONUtil.parseObj(node), LastNode.class);
+        lastNode.setLastFullTime(node.getDistance() == 0.9 ? DateUtil.now() : "0");
+        lastNode.setLastCleanTime("0");
+        lastNode.setOnFire(node.getSmog() == 1 && node.getEnvTemp() > 60);
+        return lastNode;
     }
 
     /**
@@ -89,14 +100,17 @@ public class WsNodeServiceImpl implements WsNodeService {
                 case "IMEI":
                     node.setIMEI(value);
                     break;
-                case "signalPower":
-                    node.setSignalPower(Integer.parseInt(value));
-                    break;
                 case "bright":
                     node.setBright(Integer.parseInt(value));
                     break;
-                case "touchNum":
-                    node.setTouchNum(Integer.parseInt(value));
+                case "distance":
+                    node.setDistance(Integer.parseInt(value));
+                    break;
+                case "smog":
+                    node.setSmog(Integer.parseInt(value));
+                    break;
+                case "envTemp":
+                    node.setEnvTemp(Integer.parseInt(value));
                     break;
                 case "lbs_location":
                     node.setLbsLocation(value);

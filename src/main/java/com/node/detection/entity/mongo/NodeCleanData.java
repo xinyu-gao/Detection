@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 
+/**
+ * 存储 Node 清理数据
+ */
 @Document
 @Data
 public class NodeCleanData implements Serializable {

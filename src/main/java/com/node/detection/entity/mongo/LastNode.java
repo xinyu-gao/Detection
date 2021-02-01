@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.io.Serializable;
 
 /**
- * 用于查询 node 节点最新的数据
+ * 用于查询每个 node 节点最新的数据
  */
 @Document
 @Data
@@ -63,11 +63,6 @@ public class LastNode implements Serializable {
     @Field(name = "mcu_temp")
     private int mcuTemp;
 
-    /**
-     * 信号强度
-     */
-    @Field(name = "signal_power")
-    private int signalPower;
 
     /**
      * 光线强度
@@ -76,10 +71,22 @@ public class LastNode implements Serializable {
     private int bright;
 
     /**
-     * TSI次数
+     * 距离，例如 0.3 表示 30 %
      */
-    @Field(name = "touch_num")
-    private int touchNum;
+    @Field(name = "distance")
+    private double distance;
+
+    /**
+     * 烟雾
+     */
+    @Field(name = "smog")
+    private int smog;
+
+    /**
+     * 环境温度
+     */
+    @Field(name = "env_temp")
+    private int envTemp;
 
     /**
      * LBS定位信息
@@ -87,11 +94,6 @@ public class LastNode implements Serializable {
     @Field(name = "lbs_location")
     private String lbsLocation;
 
-    /**
-     * 剩余容量
-     */
-    @Field(name = "capacity")
-    private int capacity;
 
     /**
      * 是否倾斜
@@ -110,6 +112,12 @@ public class LastNode implements Serializable {
      */
     @Field(name = "connect_status")
     private String connectStatus;
+
+    /**
+     *  上一次垃圾充满时间
+     */
+    @Field(name = "last_full_time")
+    private String lastFullTime;
 
     /**
      * 上一次清理的时间

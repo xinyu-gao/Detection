@@ -36,14 +36,16 @@ public class NodeServiceImpl implements NodeService {
         Page<Node> nodeList = nodeRepository.findByIMSIOrderByCurrentTimeDesc(imsi , PageRequest.of(0, 20));
         List<String> timeList = new LinkedList<>();
         List<Integer>  lineMcuTempList = new LinkedList<>();
-        List<Integer> lineSignalPowerList = new LinkedList<>();
+        List<Integer> lineEnvTemp = new LinkedList<>();
         List<Integer> lineBrightList = new LinkedList<>();
+        List<Integer> lineSmogList = new LinkedList<>();
         for(Node node: nodeList.getContent()){
             timeList.add(0, node.getCurrentTime().substring(11, 16));
             lineMcuTempList.add(0, node.getMcuTemp());
-            lineSignalPowerList.add(0, node.getSignalPower());
+            lineEnvTemp.add(0, node.getEnvTemp());
             lineBrightList.add(0, node.getBright());
+            lineSmogList.add(0, node.getSmog());
         };
-        return new LineData(imsi, timeList, lineMcuTempList, lineSignalPowerList, lineBrightList);
+        return new LineData(imsi, timeList, lineMcuTempList, lineEnvTemp, lineBrightList, lineSmogList);
     }
 }

@@ -32,8 +32,12 @@ public class WebSocketConfig {
 
     @Autowired
     private WebSocketClient webSocketClient;
+
+    private boolean wsFirstConnect = true;
+
     /**
      * 这个 Bean 会自动注册使用 @ServerEndpoint 注解声明的 websocket endpoint
+     *
      * @return ServerEndpointExporter 对象
      */
     @Bean
@@ -45,10 +49,13 @@ public class WebSocketConfig {
     public WebSocketClient webSocketClient() {
 
         try {
-            WebSocketClient webSocketClient = new WebSocketClient(new URI(uri),new Draft_6455()) {
+            WebSocketClient webSocketClient = new WebSocketClient(new URI(uri), new Draft_6455()) {
                 @Override
                 public void onOpen(ServerHandshake handshakedata) {
-                    log.info("[websocket] 连接成功 = {}", uri);
+                    if (wsFirstConnect) {
+                        log.info("[websocket] 连接成功 = {}", uri);
+                        wsFirstConnect = false;
+                    }
                 }
 
                 @Override
@@ -62,7 +69,7 @@ public class WebSocketConfig {
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
-//                    log.info("[websocket] 退出连接, {}", uri);
+                    //  log.info("[websocket] 退出连接, {}", uri);
                 }
 
                 @Override
@@ -79,9 +86,8 @@ public class WebSocketConfig {
     }
 
     @Scheduled(cron = "0/30 * * * * ?")
-    public void reconnectWebSocket(){
+    public void reconnectWebSocket() {
         webSocketClient.reconnect();
     }
-
 
 }
